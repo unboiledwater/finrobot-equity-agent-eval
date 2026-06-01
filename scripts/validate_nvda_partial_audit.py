@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 
@@ -209,6 +210,15 @@ def main() -> None:
         assert_true(
             "function activateTab" in case_html_report and "code-tab-panel active" in case_html_report,
             "case HTML must include real tab-switching behavior",
+        )
+        case_palette = set(re.findall(r"#[0-9A-Fa-f]{6}", case_html_report))
+        assert_true(
+            case_palette <= {"#F8F5FD", "#4D77A7", "#D4D4D4"},
+            f"case HTML uses unexpected colors: {sorted(case_palette)}",
+        )
+        assert_true(
+            len(case_palette) <= 3,
+            f"case HTML must use no more than three hex colors, found {sorted(case_palette)}",
         )
 
     print("PASSED: NVDA partial audit validation")

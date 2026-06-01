@@ -25,17 +25,17 @@ HTML_PATH = (
 PALETTE = {
     "bg": "#F8F5FD",
     "primary": "#4D77A7",
-    "secondary": "#B2A4CF",
-    "secondary_2": "#84A7CD",
-    "surface": "#E9F5F1",
-    "surface_alt": "#E2F4F3",
-    "soft": "#DCDEEE",
+    "secondary": "#D4D4D4",
+    "secondary_2": "#D4D4D4",
+    "surface": "#F8F5FD",
+    "surface_alt": "#D4D4D4",
+    "soft": "#D4D4D4",
     "line": "#D4D4D4",
-    "muted": "#A1A0A5",
-    "warning": "#FDE4E4",
-    "success": "#E9F5F1",
-    "code": "#DEE3EF",
-    "accent": "#7F6E9C",
+    "muted": "#4D77A7",
+    "warning": "#D4D4D4",
+    "success": "#D4D4D4",
+    "code": "#D4D4D4",
+    "accent": "#4D77A7",
 }
 
 FORMAL_CANDIDATES = ["B01", "B02", "B08"]
@@ -344,15 +344,11 @@ def main() -> None:
     :root {{
       --bg: {PALETTE['bg']};
       --primary: {PALETTE['primary']};
-      --secondary: {PALETTE['secondary']};
-      --secondary-2: {PALETTE['secondary_2']};
       --surface: {PALETTE['surface']};
       --surface-alt: {PALETTE['surface_alt']};
       --soft: {PALETTE['soft']};
       --line: {PALETTE['line']};
       --muted: {PALETTE['muted']};
-      --warning: {PALETTE['warning']};
-      --success: {PALETTE['success']};
       --code: {PALETTE['code']};
       --accent: {PALETTE['accent']};
     }}
@@ -367,7 +363,7 @@ def main() -> None:
     }}
     .page {{ width: min(1200px, calc(100% - 32px)); margin: 0 auto; padding: 26px 0 42px; }}
     header, .tab-panel {{
-      background: var(--surface);
+      background: var(--bg);
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 22px;
@@ -388,7 +384,7 @@ def main() -> None:
     .summary-grid {{ grid-template-columns: repeat(4, minmax(0, 1fr)); }}
     .three-grid {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }}
     .metric, .info-box {{
-      background: var(--surface-alt);
+      background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 13px;
@@ -397,8 +393,8 @@ def main() -> None:
     .metric .label {{ color: var(--accent); font-size: 12px; font-weight: 700; }}
     .metric .value {{ margin-top: 5px; font-size: 22px; color: var(--primary); font-weight: 800; }}
     .callout {{
-      background: var(--warning);
-      border-left: 4px solid var(--secondary);
+      background: var(--surface);
+      border-left: 4px solid var(--primary);
       border-radius: 8px;
       padding: 12px 14px;
       margin: 14px 0;
@@ -406,7 +402,7 @@ def main() -> None:
     .tabs, .code-tabs {{ display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }}
     .tab-button, .code-tab-button, .copy-btn {{
       border: 1px solid var(--line);
-      background: var(--surface);
+      background: var(--bg);
       color: var(--primary);
       border-radius: 8px;
       padding: 8px 12px;
@@ -414,11 +410,11 @@ def main() -> None:
       cursor: pointer;
       font: inherit;
     }}
-    .tab-button.active, .code-tab-button.active {{ background: var(--primary); color: var(--surface); border-color: var(--primary); }}
+    .tab-button.active, .code-tab-button.active {{ background: var(--primary); color: var(--bg); border-color: var(--primary); }}
     .tab-panel, .code-tab-panel {{ display: none; }}
     .tab-panel.active, .code-tab-panel.active {{ display: block; }}
     .table-wrap {{ overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; margin: 10px 0 16px; }}
-    table {{ width: 100%; border-collapse: collapse; background: var(--surface); min-width: 760px; }}
+    table {{ width: 100%; border-collapse: collapse; background: var(--bg); min-width: 760px; }}
     th, td {{ padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }}
     th {{ background: var(--soft); color: var(--primary); font-size: 12px; font-weight: 800; }}
     tr:last-child td {{ border-bottom: 0; }}
@@ -430,19 +426,16 @@ def main() -> None:
       border-radius: 999px;
       padding: 3px 9px;
       border: 1px solid var(--line);
-      background: var(--soft);
+      background: var(--surface);
       color: var(--primary);
       font-size: 12px;
       font-weight: 800;
       white-space: nowrap;
     }}
-    .chip-supported, .chip-passed {{ background: var(--success); color: var(--primary); }}
-    .chip-weak {{ background: #FEF1E8; color: var(--accent); }}
-    .chip-downgraded, .chip-backlog {{ background: var(--warning); color: var(--accent); }}
-    .chip-proposed {{ background: #DED8ED; color: var(--accent); }}
-    .code-card {{ border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); margin-top: 10px; }}
+    .chip-supported, .chip-passed, .chip-weak, .chip-downgraded, .chip-backlog, .chip-proposed {{ background: var(--surface); color: var(--primary); }}
+    .code-card {{ border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--bg); margin-top: 10px; }}
     .code-head {{ display: flex; justify-content: space-between; gap: 10px; align-items: center; background: var(--soft); padding: 10px 12px; }}
-    pre {{ margin: 0; max-height: 430px; overflow: auto; padding: 14px; background: var(--surface); color: var(--accent); }}
+    pre {{ margin: 0; max-height: 430px; overflow: auto; padding: 14px; background: var(--bg); color: var(--accent); }}
     pre code {{ background: transparent; padding: 0; color: var(--accent); }}
     .section-note {{ color: var(--accent); }}
     footer {{ margin-top: 18px; color: var(--accent); font-size: 13px; }}
