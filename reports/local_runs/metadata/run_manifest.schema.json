@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Local FinRobot Fresh-Run Manifest",
+  "type": "object",
+  "required": [
+    "run_id",
+    "ticker",
+    "company_name",
+    "generation_timestamp",
+    "finrobot_repository",
+    "finrobot_commit",
+    "generation_mode",
+    "model_provider",
+    "model_name",
+    "financial_data_provider",
+    "data_retrieval_timestamp",
+    "peer_tickers",
+    "output_files",
+    "output_file_hash",
+    "known_limitations"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "ticker": { "type": "string" },
+    "company_name": { "type": "string" },
+    "generation_timestamp": { "type": "string", "format": "date-time" },
+    "finrobot_repository": { "type": "string" },
+    "finrobot_release": { "type": ["string", "null"] },
+    "finrobot_commit": { "type": "string" },
+    "generation_mode": { "type": "string" },
+    "model_provider": { "type": "string" },
+    "model_name": { "type": "string" },
+    "financial_data_provider": { "type": "string" },
+    "data_retrieval_timestamp": { "type": "string", "format": "date-time" },
+    "peer_tickers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "config_scope": {
+      "type": "string",
+      "description": "Non-sensitive summary of configuration used for generation."
+    },
+    "output_files": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "output_file_hash": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false
+}

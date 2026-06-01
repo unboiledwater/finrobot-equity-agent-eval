@@ -1,0 +1,67 @@
+{
+  "pilot_id": "nvda_investment_overview_round_a",
+  "method": "intuitive_extraction_without_full_segmentation_rules",
+  "source_file": "pilot/nvda/nvda_section_source.md",
+  "notes": [
+    "Round A intentionally captures how an initial reviewer might extract broad claims before enforcing quote preservation and claim atomicity.",
+    "These items are not formal benchmark tasks."
+  ],
+  "extractions": [
+    {
+      "candidate_id": "A01",
+      "broad_claim": "Nvidia revenue surged from $26.9B in FY2023 to $60.9B in FY2024, a 125.9% YoY increase.",
+      "initial_type": "financial_accuracy",
+      "initial_status": "likely_scorable",
+      "issue": "Combines two reported values and one derived growth percentage in a single task."
+    },
+    {
+      "candidate_id": "A02",
+      "broad_claim": "Consensus expects Nvidia revenue to reach $130.5B in FY2025 and $215.9B in FY2026, implying a 68.3% CAGR through FY2027.",
+      "initial_type": "financial_accuracy",
+      "initial_status": "ambiguous",
+      "issue": "Mixes forward estimates, consensus source requirement, and CAGR period ambiguity."
+    },
+    {
+      "candidate_id": "A03",
+      "broad_claim": "Nvidia EBITDA will climb from $35.6B in FY2024 to $144.6B in FY2026.",
+      "initial_type": "financial_accuracy",
+      "initial_status": "likely_scorable",
+      "issue": "Forecast basis and data source are not identified in the report."
+    },
+    {
+      "candidate_id": "A04",
+      "broad_claim": "EBITDA margin improved from 22.2% in FY2023 to 58.4% in FY2024 and will exceed 70% by FY2027.",
+      "initial_type": "financial_accuracy",
+      "initial_status": "mixed",
+      "issue": "Historical margin values and forward-looking margin projection should be split."
+    },
+    {
+      "candidate_id": "A05",
+      "broad_claim": "AI accelerator leadership and global AI infrastructure demand are the primary drivers of Nvidia's performance.",
+      "initial_type": "reasoning_boundary",
+      "initial_status": "human_review",
+      "issue": "Causal strength is analytical; not directly reducible to deterministic numeric scoring."
+    },
+    {
+      "candidate_id": "A06",
+      "broad_claim": "SG&A margin declined from 9% in FY2023 to 2.1% in FY2026, proving operational leverage.",
+      "initial_type": "reasoning_boundary",
+      "initial_status": "over_strengthened",
+      "issue": "Round A wording strengthens 'evident' into 'proving'; this changes the report claim."
+    },
+    {
+      "candidate_id": "A07",
+      "broad_claim": "Nvidia's EV/EBITDA valuation is high but trending lower from 43.5x in FY2024 to 31.4x in FY2026.",
+      "initial_type": "valuation",
+      "initial_status": "ambiguous",
+      "issue": "Requires dated valuation basis and source; likely not eligible for L1/L2 without more provenance."
+    },
+    {
+      "candidate_id": "A08",
+      "broad_claim": "Nvidia's premium PE ratio is justified by its dominant competitive position and long-term growth prospects.",
+      "initial_type": "reasoning_boundary",
+      "initial_status": "human_review",
+      "issue": "Investment justification requires analytical support, not deterministic scoring."
+    }
+  ]
+}

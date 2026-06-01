@@ -1,0 +1,152 @@
+[
+  {
+    "report_id": "finrobot_official_nvda",
+    "ticker": "NVDA",
+    "company_name": "Nvidia",
+    "source_file": "reports/source/official_examples/finrobot_official_nvda.html",
+    "source_url": "https://ai4finance-foundation.github.io/FinRobot/finrobot_equity/core/output/NVDA_Equity_Research_Report.html",
+    "acquisition_date": "2026-06-01",
+    "report_date_if_available": "2026-03-22 19:48",
+    "sections": [
+      "Investment Thesis",
+      "Company Overview",
+      "Financial Analysis",
+      "Valuation Analysis",
+      "Recent News & Events",
+      "Sensitivity Analysis",
+      "Key Catalysts",
+      "Technical & Advanced Analysis",
+      "Competitive Landscape",
+      "Financial Data"
+    ],
+    "source_disclosure_structure": "Generic footer only: Company Filings, FMP, Yahoo Finance, AI4Finance Estimates. No claim-level citations.",
+    "candidate_claim_density": {
+      "financial_accuracy": null,
+      "evidence_grounding": null,
+      "reasoning_boundary": null,
+      "peer_or_risk_review": null
+    },
+    "available_primary_sources": [],
+    "v1_selection_status": "primary_case"
+  },
+  {
+    "report_id": "finrobot_official_msft",
+    "ticker": "MSFT",
+    "company_name": "Microsoft",
+    "source_file": "reports/source/official_examples/finrobot_official_msft.html",
+    "source_url": "https://ai4finance-foundation.github.io/FinRobot/finrobot_equity/core/output/MSFT_Equity_Research_Report.html",
+    "acquisition_date": "2026-06-01",
+    "report_date_if_available": "2026-03-22 20:05",
+    "sections": [
+      "Investment Thesis",
+      "Company Overview",
+      "Financial Analysis",
+      "Valuation Analysis",
+      "Recent News & Events",
+      "Sensitivity Analysis",
+      "Key Catalysts",
+      "Technical & Advanced Analysis",
+      "Competitive Landscape",
+      "Financial Data"
+    ],
+    "source_disclosure_structure": "Generic footer only: Company Filings, FMP, Yahoo Finance, AI4Finance Estimates. No claim-level citations.",
+    "candidate_claim_density": {
+      "financial_accuracy": null,
+      "evidence_grounding": null,
+      "reasoning_boundary": null,
+      "peer_or_risk_review": null
+    },
+    "available_primary_sources": [],
+    "v1_selection_status": "cross_company_sample"
+  },
+  {
+    "report_id": "finrobot_official_meta",
+    "ticker": "META",
+    "company_name": "Meta",
+    "source_file": "reports/source/official_examples/finrobot_official_meta.html",
+    "source_url": "https://ai4finance-foundation.github.io/FinRobot/finrobot_equity/core/output/META_Equity_Research_Report.html",
+    "acquisition_date": "2026-06-01",
+    "report_date_if_available": "2026-03-22 20:08",
+    "sections": [
+      "Investment Thesis",
+      "Company Overview",
+      "Financial Analysis",
+      "Valuation Analysis",
+      "Recent News & Events",
+      "Sensitivity Analysis",
+      "Key Catalysts",
+      "Technical & Advanced Analysis",
+      "Competitive Landscape",
+      "Financial Data"
+    ],
+    "source_disclosure_structure": "Generic footer only: Company Filings, FMP, Yahoo Finance, AI4Finance Estimates. No claim-level citations.",
+    "candidate_claim_density": {
+      "financial_accuracy": null,
+      "evidence_grounding": null,
+      "reasoning_boundary": null,
+      "peer_or_risk_review": null
+    },
+    "available_primary_sources": [],
+    "v1_selection_status": "cross_company_sample"
+  },
+  {
+    "report_id": "finrobot_official_tsla",
+    "ticker": "TSLA",
+    "company_name": "Tesla",
+    "source_file": "reports/source/official_examples/finrobot_official_tsla.html",
+    "source_url": "https://ai4finance-foundation.github.io/FinRobot/finrobot_equity/core/output/TSLA_Equity_Research_Report.html",
+    "acquisition_date": "2026-06-01",
+    "report_date_if_available": "2026-03-22 01:41",
+    "sections": [
+      "Investment Thesis",
+      "Company Overview",
+      "Financial Analysis",
+      "Valuation Analysis",
+      "Recent News & Events",
+      "Sensitivity Analysis",
+      "Key Catalysts",
+      "Technical & Advanced Analysis",
+      "Competitive Landscape",
+      "Financial Data"
+    ],
+    "source_disclosure_structure": "Generic footer only: Company Filings, FMP, Yahoo Finance, AI4Finance Estimates. No claim-level citations.",
+    "candidate_claim_density": {
+      "financial_accuracy": null,
+      "evidence_grounding": null,
+      "reasoning_boundary": null,
+      "peer_or_risk_review": null
+    },
+    "available_primary_sources": [],
+    "v1_selection_status": "cross_company_sample"
+  },
+  {
+    "report_id": "finrobot_official_cop",
+    "ticker": "COP",
+    "company_name": "ConocoPhillips",
+    "source_file": "reports/source/official_examples/finrobot_official_cop.html",
+    "source_url": "https://ai4finance-foundation.github.io/FinRobot/finrobot_equity/core/output/COP_Equity_Research_Report.html",
+    "acquisition_date": "2026-06-01",
+    "report_date_if_available": "2026-03-22 21:30",
+    "sections": [
+      "Investment Thesis",
+      "Company Overview",
+      "Financial Analysis",
+      "Valuation Analysis",
+      "Recent News & Events",
+      "Sensitivity Analysis",
+      "Key Catalysts",
+      "Technical & Advanced Analysis",
+      "Competitive Landscape",
+      "Financial Data"
+    ],
+    "source_disclosure_structure": "Generic footer only: Company Filings, FMP, Yahoo Finance, AI4Finance Estimates. No claim-level citations.",
+    "candidate_claim_density": {
+      "financial_accuracy": null,
+      "evidence_grounding": null,
+      "reasoning_boundary": null,
+      "peer_or_risk_review": null
+    },
+    "available_primary_sources": [],
+    "v1_selection_status": "cross_company_sample"
+  }
+]

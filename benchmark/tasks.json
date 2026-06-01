@@ -1,0 +1,47 @@
+[
+  {
+    "task_id": "single_company_aapl",
+    "family": "single_company_report",
+    "company": "Apple Inc.",
+    "ticker": "AAPL",
+    "industry": "consumer technology",
+    "peers": ["MSFT", "GOOGL", "DELL", "HPQ"],
+    "prompt": "Generate a professional equity research report for AAPL, including financial data review, three-year forecast, DCF valuation, peer comparison, investment thesis, risks, and final recommendation.",
+    "expected_sections": ["financials", "forecast", "valuation", "peers", "risks", "recommendation"],
+    "failure_expectation": "none"
+  },
+  {
+    "task_id": "peer_comparison_semis",
+    "family": "peer_comparison",
+    "company": "NVIDIA Corporation",
+    "ticker": "NVDA",
+    "industry": "semiconductors",
+    "peers": ["AMD", "AVGO", "INTC", "QCOM"],
+    "prompt": "Compare NVDA with semiconductor peers on revenue growth, margins, valuation multiples, business mix, and relative investment attractiveness.",
+    "expected_sections": ["financials", "peers", "valuation", "recommendation"],
+    "failure_expectation": "none"
+  },
+  {
+    "task_id": "abnormal_input_bad_ticker",
+    "family": "abnormal_input",
+    "company": "Invalid Corporation",
+    "ticker": "BADTICKER123",
+    "industry": "unknown",
+    "peers": ["AAPL", "MSFT"],
+    "prompt": "Attempt an equity research report for an invalid ticker and explain data availability limits without fabricating financials or valuation.",
+    "expected_sections": ["risks", "recommendation"],
+    "failure_expectation": "graceful_failure"
+  },
+  {
+    "task_id": "valuation_sensitivity_tsla",
+    "family": "valuation_sensitivity",
+    "company": "Tesla, Inc.",
+    "ticker": "TSLA",
+    "industry": "automobiles",
+    "peers": ["GM", "F", "TM", "BYDDF"],
+    "prompt": "Generate a TSLA DCF with explicit WACC and terminal growth sensitivity, and discuss how valuation changes under bear, base, and bull cases.",
+    "expected_sections": ["financials", "forecast", "valuation", "risks", "recommendation"],
+    "failure_expectation": "none"
+  }
+]
+

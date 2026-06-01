@@ -1,0 +1,43 @@
+{
+  "task_id": "single_company_aapl",
+  "company": "Apple Inc.",
+  "ticker": "AAPL",
+  "report_text": "Apple shows resilient services growth, stable operating margins, and significant capital return. Historical revenue and operating income are used as the base for a three-year forecast. The DCF applies WACC, terminal growth, free cash flow conversion, and sensitivity analysis. Peer comparison against MSFT, GOOGL, DELL, and HPQ highlights Apple's premium margin profile and ecosystem durability. Key risks include China demand, FX, regulatory pressure, supply chain concentration, and valuation multiple compression. Recommendation: Buy, supported by cash generation, services mix shift, and reasonable upside to fair value.",
+  "financials": {
+    "revenue": {"2022": 394328, "2023": 383285, "2024": 391035},
+    "operating_income": {"2022": 119437, "2023": 114301, "2024": 123216},
+    "free_cash_flow": {"2022": 111443, "2023": 99584, "2024": 108807}
+  },
+  "forecast": {
+    "years": [2025, 2026, 2027],
+    "revenue_growth": [0.04, 0.045, 0.04],
+    "ebit_margin": [0.315, 0.318, 0.32],
+    "fcf_conversion": [0.27, 0.275, 0.28]
+  },
+  "valuation": {
+    "method": "DCF",
+    "wacc": 0.085,
+    "terminal_growth": 0.025,
+    "fair_value": 221.4,
+    "sensitivity": [
+      {"wacc": 0.08, "terminal_growth": 0.02, "fair_value": 226.0},
+      {"wacc": 0.085, "terminal_growth": 0.025, "fair_value": 221.4},
+      {"wacc": 0.09, "terminal_growth": 0.03, "fair_value": 218.1}
+    ]
+  },
+  "peers": [
+    {"ticker": "MSFT", "multiple": "EV/EBITDA", "value": 24.5},
+    {"ticker": "GOOGL", "multiple": "EV/EBITDA", "value": 17.8},
+    {"ticker": "DELL", "multiple": "EV/EBITDA", "value": 9.4},
+    {"ticker": "HPQ", "multiple": "EV/EBITDA", "value": 7.2}
+  ],
+  "risks": ["China demand", "FX volatility", "regulatory pressure", "supply chain concentration", "valuation multiple compression"],
+  "recommendation": "Buy",
+  "trace": [
+    {"tool": "financial_data", "status": "ok"},
+    {"tool": "forecast_model", "status": "ok"},
+    {"tool": "dcf_model", "status": "ok"},
+    {"tool": "peer_comparison", "status": "ok"}
+  ]
+}
+

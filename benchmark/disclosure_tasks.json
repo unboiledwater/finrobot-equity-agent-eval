@@ -1,0 +1,291 @@
+[
+  {
+    "task_id": "num_market_cap_from_price_and_shares_nvda",
+    "family": "numeric_extraction_calculation",
+    "material": {
+      "document": "NVDA FMP stable profile and latest 10-K share data",
+      "date": "2026-05-29 run context",
+      "source_type": "market_data_and_annual_report"
+    },
+    "question": "Calculate market capitalization from share price and diluted/basic shares outstanding, and compare it with the market cap reported by the data provider.",
+    "gold_answer": {
+      "claim_type": "calculation_result",
+      "answer": "Accepted answers must state the share-count basis, price date, currency, formula, calculated market cap, and provider-reported market cap difference.",
+      "calculation": "share_price * shares_outstanding",
+      "requires_exact_source_values": true
+    },
+    "evidence": [
+      {
+        "source": "FMP stable profile and company annual report",
+        "quote": "Evidence snippet to be pinned: share price, marketCap, shares outstanding, date, and currency."
+      }
+    ],
+    "common_failures": ["share_count_scope_error", "unit_magnitude_error", "missing_price_date"],
+    "scoring_dimensions": ["numeric_accuracy", "unit_accuracy", "calculation_reproducibility", "evidence_citation_accuracy"]
+  },
+  {
+    "task_id": "num_ps_ratio_revenue_period_nvda",
+    "family": "numeric_extraction_calculation",
+    "material": {
+      "document": "NVDA annual report and FMP key metrics",
+      "date": "2026-05-29 run context",
+      "source_type": "annual_report_and_market_data"
+    },
+    "question": "Compute P/S using market capitalization and the selected fiscal-year revenue. State the fiscal year and currency basis.",
+    "gold_answer": {
+      "claim_type": "calculation_result",
+      "answer": "Accepted answers must use the requested fiscal-year revenue and market-cap date, and must not mix trailing, fiscal-year, and forward revenue without labeling the basis.",
+      "calculation": "market_cap / revenue",
+      "requires_exact_source_values": true
+    },
+    "evidence": [
+      {
+        "source": "Annual report income statement and FMP key metrics",
+        "quote": "Evidence snippet to be pinned: fiscal-year revenue, market cap, reported currency, and date."
+      }
+    ],
+    "common_failures": ["period_mismatch", "currency_scope_error", "forward_vs_historical_mismatch"],
+    "scoring_dimensions": ["numeric_accuracy", "unit_accuracy", "source_version_accuracy", "calculation_reproducibility"]
+  },
+  {
+    "task_id": "num_margin_change_period_match",
+    "family": "numeric_extraction_calculation",
+    "material": {
+      "document": "Annual report income statement",
+      "date": "TBD",
+      "source_type": "annual_report"
+    },
+    "question": "Compare gross margin or EBITDA margin between two disclosed fiscal years and calculate the change in percentage points.",
+    "gold_answer": {
+      "claim_type": "calculation_result",
+      "answer": "Accepted answers must match the requested fiscal years and calculate percentage-point change, not percent change unless explicitly requested.",
+      "calculation": "margin_year_2 - margin_year_1",
+      "requires_exact_source_values": true
+    },
+    "evidence": [
+      {
+        "source": "Annual report financial tables",
+        "quote": "Evidence snippet to be pinned: revenue, gross profit or EBITDA, and margins by fiscal year."
+      }
+    ],
+    "common_failures": ["period_mismatch", "percentage_vs_percentage_point_error", "metric_definition_error"],
+    "scoring_dimensions": ["numeric_accuracy", "unit_accuracy", "calculation_reproducibility", "evidence_citation_accuracy"]
+  },
+  {
+    "task_id": "scope_10k_vs_10q_period_mix",
+    "family": "cross_document_scope_consistency",
+    "material": {
+      "document": "10-K and subsequent 10-Q",
+      "date": "TBD",
+      "source_type": "sec_filings"
+    },
+    "question": "When explaining annual performance, may the agent mix a later 10-Q metric into the fiscal-year 10-K discussion without labeling the period?",
+    "gold_answer": {
+      "claim_type": "analytical_inference",
+      "answer": "No. Later quarterly data may be used as an update only if clearly labeled with its filing date and period; it must not be presented as part of the prior fiscal-year result.",
+      "calculation": null,
+      "requires_exact_source_values": false
+    },
+    "evidence": [
+      {
+        "source": "10-K and 10-Q filing dates and periods",
+        "quote": "Evidence snippet to be pinned: filing date, fiscal period, and metric definition."
+      }
+    ],
+    "common_failures": ["period_mismatch", "source_version_error", "time_travel_error"],
+    "scoring_dimensions": ["source_version_accuracy", "time_travel_error_rate", "fact_inference_boundary_accuracy", "conclusion_contraction"]
+  },
+  {
+    "task_id": "scope_reported_vs_adjusted_metric",
+    "family": "cross_document_scope_consistency",
+    "material": {
+      "document": "Earnings release and 10-K/10-Q",
+      "date": "TBD",
+      "source_type": "earnings_release_and_sec_filing"
+    },
+    "question": "Distinguish GAAP net income from non-GAAP adjusted net income when summarizing profitability.",
+    "gold_answer": {
+      "claim_type": "disclosed_fact",
+      "answer": "Accepted answers must label GAAP and non-GAAP metrics separately and must not use adjusted figures as if they were reported GAAP results.",
+      "calculation": null,
+      "requires_exact_source_values": true
+    },
+    "evidence": [
+      {
+        "source": "Earnings release reconciliation table and SEC filing",
+        "quote": "Evidence snippet to be pinned: GAAP metric, non-GAAP metric, and reconciliation note."
+      }
+    ],
+    "common_failures": ["gaap_non_gaap_conflation", "metric_definition_error", "source_version_error"],
+    "scoring_dimensions": ["source_version_accuracy", "evidence_citation_accuracy", "fact_inference_boundary_accuracy"]
+  },
+  {
+    "task_id": "scope_guidance_vs_actuals",
+    "family": "cross_document_scope_consistency",
+    "material": {
+      "document": "Investor presentation, earnings call, and subsequent filing",
+      "date": "TBD",
+      "source_type": "guidance_and_actuals"
+    },
+    "question": "When discussing outlook, distinguish management guidance from actual reported results.",
+    "gold_answer": {
+      "claim_type": "analytical_inference",
+      "answer": "Guidance must be labeled as forward-looking management expectation. Actual results must come from later filings or releases and cannot be implied from guidance alone.",
+      "calculation": null,
+      "requires_exact_source_values": false
+    },
+    "evidence": [
+      {
+        "source": "Investor presentation and later earnings release",
+        "quote": "Evidence snippet to be pinned: guidance language and later actual result."
+      }
+    ],
+    "common_failures": ["guidance_actuals_conflation", "overconfident_inference", "source_version_error"],
+    "scoring_dimensions": ["source_version_accuracy", "fact_inference_boundary_accuracy", "conclusion_contraction"]
+  },
+  {
+    "task_id": "boundary_dcf_accounting_vs_equity_valuation",
+    "family": "fact_inference_boundary",
+    "material": {
+      "document": "Annual report fair-value note",
+      "date": "TBD",
+      "source_type": "annual_report"
+    },
+    "question": "If an annual report mentions DCF for fair-value measurement of financial instruments or impairments, can the agent conclude management values the stock using DCF?",
+    "gold_answer": {
+      "claim_type": "analytical_inference",
+      "answer": "No. A DCF reference in an accounting note is evidence of a measurement method for that accounting item, not direct evidence of management's equity valuation method.",
+      "calculation": null,
+      "requires_exact_source_values": false
+    },
+    "evidence": [
+      {
+        "source": "Annual report fair-value or impairment note",
+        "quote": "Evidence snippet to be pinned: DCF context and accounting purpose."
+      }
+    ],
+    "common_failures": ["keyword_context_error", "unsupported_inference", "overconfident_inference"],
+    "scoring_dimensions": ["fact_inference_boundary_accuracy", "unsupported_inference_rate", "conclusion_contraction"]
+  },
+  {
+    "task_id": "boundary_segment_growth_vs_company_growth",
+    "family": "fact_inference_boundary",
+    "material": {
+      "document": "Annual report segment note",
+      "date": "TBD",
+      "source_type": "annual_report"
+    },
+    "question": "If one segment grows rapidly, can the agent conclude the entire company has the same growth rate?",
+    "gold_answer": {
+      "claim_type": "analytical_inference",
+      "answer": "No. Segment growth must be labeled as segment-specific unless consolidated revenue growth supports the company-wide claim.",
+      "calculation": null,
+      "requires_exact_source_values": true
+    },
+    "evidence": [
+      {
+        "source": "Segment revenue table and consolidated income statement",
+        "quote": "Evidence snippet to be pinned: segment revenue growth and consolidated revenue growth."
+      }
+    ],
+    "common_failures": ["segment_company_conflation", "unsupported_inference", "metric_scope_error"],
+    "scoring_dimensions": ["unsupported_inference_rate", "fact_inference_boundary_accuracy", "evidence_citation_accuracy"]
+  },
+  {
+    "task_id": "boundary_risk_disclosed_vs_risk_realized",
+    "family": "fact_inference_boundary",
+    "material": {
+      "document": "10-K risk factors and later 8-K",
+      "date": "TBD",
+      "source_type": "sec_filings"
+    },
+    "question": "Does a risk factor disclosure prove that the risk has already materialized?",
+    "gold_answer": {
+      "claim_type": "analytical_inference",
+      "answer": "No. A risk factor can identify a possible risk. Realization requires separate evidence, such as later filing, event disclosure, or reported financial impact.",
+      "calculation": null,
+      "requires_exact_source_values": false
+    },
+    "evidence": [
+      {
+        "source": "10-K risk factor and later 8-K if available",
+        "quote": "Evidence snippet to be pinned: risk-factor wording and any event disclosure."
+      }
+    ],
+    "common_failures": ["risk_disclosure_realization_conflation", "overconfident_inference", "missing_evidence_boundary"],
+    "scoring_dimensions": ["unsupported_inference_rate", "fact_inference_boundary_accuracy", "conclusion_contraction"]
+  },
+  {
+    "task_id": "trace_retrieve_10k_before_financial_claim",
+    "family": "trace_tool_use",
+    "material": {
+      "document": "10-K annual report",
+      "date": "TBD",
+      "source_type": "trace_task"
+    },
+    "question": "Before asserting a key annual financial metric, retrieve the original 10-K table or a verified data-provider row and cite it.",
+    "gold_answer": {
+      "claim_type": "trace_expectation",
+      "answer": "The trace should show source retrieval, field extraction, optional calculation, and final citation.",
+      "calculation": "metric_value or derived_metric_formula",
+      "requires_exact_source_values": true
+    },
+    "evidence": [
+      {
+        "source": "Trace log and 10-K/FMP row",
+        "quote": "Expected trace: retrieve filing/data row -> extract field -> calculate if needed -> cite."
+      }
+    ],
+    "common_failures": ["summary_reliance", "missing_calculator_call", "citation_conclusion_mismatch"],
+    "scoring_dimensions": ["required_tool_call_rate", "calculation_reproducibility", "evidence_citation_accuracy", "trace_diagnosability"]
+  },
+  {
+    "task_id": "trace_dcf_context_check_public_filing",
+    "family": "trace_tool_use",
+    "material": {
+      "document": "Annual report note containing DCF keyword",
+      "date": "TBD",
+      "source_type": "trace_task"
+    },
+    "question": "Check the context around a DCF keyword hit before answering whether DCF supports the equity valuation conclusion.",
+    "gold_answer": {
+      "claim_type": "trace_expectation",
+      "answer": "The trace should show retrieval of surrounding context, not only keyword match. Final answer should classify the DCF reference according to its actual filing context.",
+      "calculation": null,
+      "requires_exact_source_values": false
+    },
+    "evidence": [
+      {
+        "source": "Trace log and annual report context",
+        "quote": "Expected trace: keyword hit -> surrounding paragraph inspection -> context classification."
+      }
+    ],
+    "common_failures": ["keyword_only_retrieval", "unsupported_inference", "context_omission"],
+    "scoring_dimensions": ["required_tool_call_rate", "fact_inference_boundary_accuracy", "trace_diagnosability"]
+  },
+  {
+    "task_id": "trace_guidance_actuals_separation",
+    "family": "trace_tool_use",
+    "material": {
+      "document": "Investor presentation and earnings release",
+      "date": "TBD",
+      "source_type": "trace_task"
+    },
+    "question": "Answer an outlook question while separating management guidance, actual reported results, and analyst inference.",
+    "gold_answer": {
+      "claim_type": "trace_expectation",
+      "answer": "The answer should classify each claim level and the trace should show source checks for guidance and actuals separately.",
+      "calculation": null,
+      "requires_exact_source_values": false
+    },
+    "evidence": [
+      {
+        "source": "Trace log, investor presentation, and earnings release",
+        "quote": "Expected trace: retrieve guidance -> retrieve actuals if available -> classify claims -> list unknowns."
+      }
+    ],
+    "common_failures": ["guidance_actuals_conflation", "unsupported_inference", "missing_unknowns"],
+    "scoring_dimensions": ["unsupported_inference_rate", "conclusion_contraction", "trace_diagnosability", "evidence_citation_accuracy"]
+  }
+]
+

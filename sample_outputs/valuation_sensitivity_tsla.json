@@ -1,0 +1,42 @@
+{
+  "task_id": "valuation_sensitivity_tsla",
+  "company": "Tesla, Inc.",
+  "ticker": "TSLA",
+  "report_text": "TSLA valuation is highly sensitive to delivery growth, automotive gross margin, software contribution, WACC, and terminal growth. The base DCF uses explicit WACC and terminal growth assumptions and includes bear, base, and bull sensitivity. Risks include EV demand, price cuts, China competition, regulatory issues, execution risk in autonomy, and valuation multiple compression. Recommendation: Hold given a wide valuation range and high dependence on long-term optionality.",
+  "financials": {
+    "revenue": {"2022": 81462, "2023": 96773, "2024": 97690},
+    "operating_income": {"2022": 13656, "2023": 8891, "2024": 7076},
+    "free_cash_flow": {"2022": 7552, "2023": 4357, "2024": 3581}
+  },
+  "forecast": {
+    "years": [2025, 2026, 2027],
+    "revenue_growth": [0.12, 0.15, 0.16],
+    "ebit_margin": [0.085, 0.095, 0.105],
+    "fcf_conversion": [0.04, 0.055, 0.065]
+  },
+  "valuation": {
+    "method": "DCF",
+    "wacc": 0.095,
+    "terminal_growth": 0.03,
+    "fair_value": 205.0,
+    "sensitivity": [
+      {"case": "bear", "wacc": 0.105, "terminal_growth": 0.02, "fair_value": 145.0},
+      {"case": "base", "wacc": 0.095, "terminal_growth": 0.03, "fair_value": 205.0},
+      {"case": "bull", "wacc": 0.085, "terminal_growth": 0.04, "fair_value": 286.0}
+    ]
+  },
+  "peers": [
+    {"ticker": "GM", "multiple": "EV/EBITDA", "value": 5.1},
+    {"ticker": "F", "multiple": "EV/EBITDA", "value": 5.4},
+    {"ticker": "TM", "multiple": "EV/EBITDA", "value": 8.0},
+    {"ticker": "BYDDF", "multiple": "EV/EBITDA", "value": 13.2}
+  ],
+  "risks": ["EV demand", "price cuts", "China competition", "regulatory issues", "autonomy execution", "valuation multiple compression"],
+  "recommendation": "Hold",
+  "trace": [
+    {"tool": "financial_data", "status": "ok"},
+    {"tool": "forecast_model", "status": "ok"},
+    {"tool": "dcf_model", "status": "ok"},
+    {"tool": "sensitivity_analysis", "status": "ok"}
+  ]
+}

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NVDA Partial Audit Report — 投资概览局部审查</title>
+  <style>
+    :root {
+      --bg: #F8F5FD;
+      --primary: #4D77A7;
+      --secondary: #B2A4CF;
+      --secondary-2: #84A7CD;
+      --surface: #FFFFFF;
+      --surface-alt: #E2F4F3;
+      --warning: #FDE4E4;
+      --border: #D4D4D4;
+      --muted: #A1A0A5;
+      --soft: #DCDEEE;
+      --text: #263241;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    .page { max-width: 1180px; margin: 0 auto; padding: 28px 22px 40px; }
+    header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(77, 119, 167, 0.08);
+    }
+    h1 { margin: 0 0 10px; color: var(--primary); font-size: 28px; letter-spacing: 0; }
+    h2 { margin: 0 0 14px; color: var(--primary); font-size: 20px; letter-spacing: 0; }
+    h3 { margin: 18px 0 10px; color: var(--primary); font-size: 16px; letter-spacing: 0; }
+    p { margin: 0 0 12px; }
+    code { background: var(--soft); border-radius: 5px; padding: 2px 5px; font-size: 0.92em; }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .metric {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 86px;
+    }
+    .metric .label { color: #4f5c68; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .metric .value { margin-top: 6px; font-size: 22px; color: var(--primary); font-weight: 700; }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 18px 0;
+    }
+    .tab-link {
+      display: inline-block;
+      text-decoration: none;
+      color: var(--primary);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-weight: 650;
+    }
+    .tab-link:hover { background: var(--soft); }
+    section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .callout {
+      background: var(--warning);
+      border-left: 4px solid var(--secondary);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin: 12px 0;
+    }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); min-width: 760px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; text-align: left; }
+    th { background: var(--soft); color: var(--primary); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+    tr:last-child td { border-bottom: 0; }
+    .num { text-align: right; }
+    .chip {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 9px;
+      border: 1px solid var(--border);
+      background: var(--soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .chip-supported, .chip-passed { background: #E9F5F1; color: #3b6f55; }
+    .chip-weak { background: #FEF1E8; color: #7F6E9C; }
+    .chip-downgraded, .chip-backlog { background: var(--warning); color: #7F6E9C; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    footer { color: #5e6670; margin-top: 18px; font-size: 13px; }
+    @media (max-width: 860px) {
+      .summary-grid, .two-col { grid-template-columns: 1fr; }
+      .page { padding: 16px 12px 28px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header id="overview">
+      <h1>NVDA Partial Audit Report — 投资概览局部审查</h1>
+      <p>本 HTML 报告只渲染 canonical Markdown 与结构化 JSON 产物，不新增任何审查判断。</p>
+      <div class="summary-grid">
+        <div class="metric"><div class="label">状态</div><div class="value">局部审查</div><div>Audit / in progress</div></div>
+        <div class="metric"><div class="label">覆盖范围</div><div class="value">1 个章节</div><div>仅 Investment Overview</div></div>
+        <div class="metric"><div class="label">正式评分 Claims</div><div class="value">3 L2</div><div>分母限定为符合条件的 L2 tasks</div></div>
+        <div class="metric"><div class="label">校验</div><div class="value">已通过</div><div>由脚本复算与边界检查支持</div></div>
+      </div>
+      <div class="callout">
+        当前 <strong>3/3 supported</strong> 只适用于已满足 L2 纳入条件的正式任务集合；不代表整份 NVDA 报告准确率、跨公司结果，也不代表 generation comparison 结论。
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="报告标签页">
+      <a class="tab-link" href="#overview">概览</a>
+      <a class="tab-link" href="#claims">Claims 明细</a>
+      <a class="tab-link" href="#sources">来源</a>
+      <a class="tab-link" href="#exclusions">排除项</a>
+      <a class="tab-link" href="#validation">校验</a>
+      <a class="tab-link" href="#code-map">代码映射</a>
+    </nav>
+
+    <section id="claims">
+      <h2>Claims 明细</h2>
+      <p>以下为符合 L2 条件的正式任务集合的 claim-level 结果。当前评分分母：<strong>3</strong>。</p>
+      <div class="table-wrap"><table><thead><tr><th>Task ID</th><th>Candidate</th><th>原始 Claim Quote</th><th>实质判断</th><th>报告级可追溯性</th><th>执行层级</th></tr></thead><tbody><tr><td><code>NVDA-INVOV-B01-REV-VALUES</code></td><td><code>B01</code></td><td>revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024</td><td><span class="chip chip-supported">已支持</span></td><td><span class="chip chip-weak">弱可追溯</span></td><td><code>L2_semi_automated</code></td></tr><tr><td><code>NVDA-INVOV-B02-REV-GROWTH</code></td><td><code>B02</code></td><td>representing a 125.9% year-over-year increase</td><td><span class="chip chip-supported">已支持</span></td><td><span class="chip chip-weak">弱可追溯</span></td><td><code>L2_semi_automated</code></td></tr><tr><td><code>NVDA-INVOV-B08-SGA-MARGIN</code></td><td><code>B08</code></td><td>SG&amp;A as a percentage of revenue declining from 9% in FY2023 to just 2.1% in FY2026</td><td><span class="chip chip-supported">已支持</span></td><td><span class="chip chip-weak">弱可追溯</span></td><td><code>L2_semi_automated</code></td></tr></tbody></table></div>
+      <div class="two-col">
+        <div>
+          <h3>确定性评分摘要</h3>
+          <div class="table-wrap"><table><thead><tr><th>指标</th><th>结果</th></tr></thead><tbody><tr><td>符合条件的 L2 formal tasks 总数</td><td class="num">3</td></tr><tr><td>Supported（已支持）</td><td class="num">3</td></tr><tr><td>Contradicted（相矛盾）</td><td class="num">0</td></tr><tr><td>Unsupported（未支持）</td><td class="num">0</td></tr><tr><td>L2 合格集合内的实质准确率</td><td class="num">3/3</td></tr></tbody></table></div>
+        </div>
+        <div>
+          <h3>报告级引用可追溯性</h3>
+          <div class="table-wrap"><table><thead><tr><th>指标</th><th>结果</th></tr></thead><tbody><tr><td>Strong traceability（强可追溯）</td><td class="num">0</td></tr><tr><td>Partial traceability（部分可追溯）</td><td class="num">0</td></tr><tr><td>Weak traceability（弱可追溯）</td><td class="num">3</td></tr><tr><td>Absent traceability（无可追溯）</td><td class="num">0</td></tr></tbody></table></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <h2>来源</h2>
+      <p>本节列出用于 source closure 的一手来源。下列来源均在 FinRobot 报告时间戳之前可获得。</p>
+      <div class="table-wrap"><table><thead><tr><th>Source ID</th><th>类型</th><th>文件</th><th>发布日期</th><th>期间</th><th>报告前可用性</th></tr></thead><tbody><tr><td><code>SRC-NVDA-FY2024-10K</code></td><td>Form 10-K</td><td>NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024</td><td>2024-02-21</td><td>FY2024 and FY2023</td><td><span class="chip chip-passed">报告前可用</span></td></tr><tr><td><code>SRC-NVDA-FY2024-RESULTS</code></td><td>Earnings release</td><td>NVIDIA fiscal 2024 results release</td><td>2024-02-21</td><td>FY2024 and FY2023</td><td><span class="chip chip-passed">报告前可用</span></td></tr><tr><td><code>SRC-NVDA-FY2026-10K</code></td><td>Form 10-K</td><td>NVIDIA Corporation Form 10-K for fiscal year ended January 25, 2026</td><td>2026-02-25</td><td>FY2026 and comparative columns</td><td><span class="chip chip-passed">报告前可用</span></td></tr><tr><td><code>SRC-NVDA-FY2026-RESULTS</code></td><td>Earnings release</td><td>NVIDIA fiscal 2026 results release</td><td>2026-02-25</td><td>FY2026 and FY2025</td><td><span class="chip chip-passed">报告前可用</span></td></tr></tbody></table></div>
+    </section>
+
+    <section id="exclusions">
+      <h2>排除项</h2>
+      <p>已降级与待补证据的 claims 会被记录，但不进入当前确定性准确率分母。</p>
+      <div class="table-wrap"><table><thead><tr><th>Candidate</th><th>Claim</th><th>排除/暂缓原因</th><th>触发规则</th><th>重新进入条件</th><th>状态</th></tr></thead><tbody><tr><td><code>B05</code></td><td>EBITDA has also accelerated, reaching $35.6 billion in FY2024</td><td>缺少与报告指标定义完全一致的已披露 EBITDA 口径和可复现输入；FinRobot/FMP 表格不能作为最终事实标准。</td><td><code>L2_SOURCE_CLOSURE_REQUIRED</code></td><td>补充已披露 EBITDA 定义或可复现 reconciliation。</td><td><span class="chip chip-downgraded">已降级</span></td></tr><tr><td><code>B06</code></td><td>EBITDA margin improving from 22.2% in FY2023 to 58.4% in FY2024</td><td>EBITDA margin 依赖 EBITDA 口径；在 EBITDA 定义不可复现前，不能进入确定性 L2 评分。</td><td><code>L2_DEPENDENT_METRIC_UNCLOSED</code></td><td>闭合 B05，并确认收入分母期间一致。</td><td><span class="chip chip-downgraded">已降级</span></td></tr><tr><td><code>B04</code></td><td>a 68.3% CAGR through FY2027</td><td>CAGR 的起点、终点和期间未被充分指定；重新进入需要明确起始期间、结束期间和来源数值。</td><td><code>TRACEABILITY_INPUTS_REQUIRED</code></td><td>补齐缺失来源、日期或公式输入后再评估。</td><td><span class="chip chip-backlog">待补证据</span></td></tr><tr><td><code>B10</code></td><td>EV/EBITDA valuation, while high (43.5x in FY2024), is trending lower (31.4x in FY2026)</td><td>EV/EBITDA 需要带日期的市场价值、净债务或 EV 口径，以及 EBITDA 定义；报告未识别这些输入。</td><td><code>TRACEABILITY_INPUTS_REQUIRED</code></td><td>补齐缺失来源、日期或公式输入后再评估。</td><td><span class="chip chip-backlog">待补证据</span></td></tr><tr><td><code>B11</code></td><td>PE ratio of 37.7x FY2026E</td><td>Forward PE 需要带日期的股价和 EPS 预测来源；报告未识别这些输入。</td><td><code>TRACEABILITY_INPUTS_REQUIRED</code></td><td>补齐缺失来源、日期或公式输入后再评估。</td><td><span class="chip chip-backlog">待补证据</span></td></tr></tbody></table></div>
+    </section>
+
+    <section id="validation">
+      <h2>校验</h2>
+      <p><span class="chip chip-passed">已通过</span> 校验状态：<strong>已通过</strong>。</p>
+      <p>已校验产物：<code>benchmark/report_audit_tasks.json</code>、<code>evidence/nvda/verified_claims.json</code>、<code>reports/audit_outputs/official_report_audits/nvda_partial_audit.md</code>。</p>
+      <p>已校验指标：L2 分母、task IDs、supported 数量、traceability 数量、排除项与分母隔离、HTML tab 存在性、代码/数据映射、批准配色和报告边界措辞。</p>
+    </section>
+
+    <section id="code-map">
+      <h2>主要功能与代码/数据映射</h2>
+      <div class="table-wrap"><table><thead><tr><th>报告功能</th><th>作用</th><th>主要数据/代码产物</th><th>校验或依赖</th></tr></thead><tbody><tr><td>Claim 级结果</td><td>展示符合 L2 资格的正式任务与评分分母</td><td><code>benchmark/report_audit_tasks.json</code></td><td><code>scripts/validate_nvda_partial_audit.py</code></td></tr><tr><td>证据登记</td><td>展示来源闭合状态与 claim 判定</td><td><code>evidence/nvda/verified_claims.json</code></td><td><code>docs/source_temporal_alignment_rules.md</code></td></tr><tr><td>来源登记</td><td>展示披露日期、覆盖期间与报告生成前可用性</td><td><code>evidence/nvda/primary_sources.md</code></td><td>一手来源映射复核</td></tr><tr><td>排除与待补证据</td><td>展示不进入确定性分母的降级或暂缓 claims</td><td><code>evidence/nvda/verified_claims.json</code></td><td><code>benchmark/scoring_rules.json</code></td></tr><tr><td>校验</td><td>校验 JSON/Markdown/HTML 统计与边界措辞</td><td><code>scripts/validate_nvda_partial_audit.py</code></td><td>必须输出 PASSED</td></tr></tbody></table></div>
+    </section>
+
+    <footer>
+      Canonical source：<code>reports/audit_outputs/official_report_audits/nvda_partial_audit.md</code>。HTML 是面向人类阅读的展示层。
+      Markdown 源文件长度：6680 个字符。
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "task_id": "abnormal_input_bad_ticker",
+  "company": "Invalid Corporation",
+  "ticker": "BADTICKER123",
+  "report_text": "The requested ticker could not be validated through the available financial data providers. Because audited historical financials, market price, shares outstanding, and peer classification are unavailable, no DCF valuation or investment recommendation should be produced. The appropriate output is a data availability warning and a request for analyst confirmation.",
+  "financials": {},
+  "forecast": {},
+  "valuation": {},
+  "peers": [],
+  "risks": ["invalid ticker", "missing financial data", "valuation cannot be audited"],
+  "recommendation": "No Rating",
+  "trace": [
+    {"tool": "financial_data", "status": "error", "message": "ticker not found"},
+    {"tool": "dcf_model", "status": "skipped", "message": "missing financials"}
+  ]
+}
+

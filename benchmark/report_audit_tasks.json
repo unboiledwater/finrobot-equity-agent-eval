@@ -1,0 +1,171 @@
+{
+  "version": "v1",
+  "status": "formal_nvda_seed_tasks_started",
+  "description": "NVDA Investment Overview segmentation pilot is complete. Three source-mapped formal tasks have been added; EBITDA-related candidates are downgraded pending a reproducible EBITDA definition.",
+  "pilot_source": "pilot/nvda/round_b_rule_based_extraction.json",
+  "verified_claims_source": "evidence/nvda/verified_claims.json",
+  "eligible_pilot_candidates": [
+    "B01",
+    "B02",
+    "B08"
+  ],
+  "blocked_or_review_candidates": [
+    {
+      "candidate_id": "B03",
+      "reason": "Forward consensus revenue estimates require dated consensus or model-source basis."
+    },
+    {
+      "candidate_id": "B04",
+      "reason": "CAGR endpoint is ambiguous; requires period clarification before formal task entry."
+    },
+    {
+      "candidate_id": "B05",
+      "reason": "EBITDA is not directly reported in mapped primary source; requires reproducible definition and inputs."
+    },
+    {
+      "candidate_id": "B06",
+      "reason": "EBITDA margin depends on EBITDA definition; downgraded to H1 pending reproducible basis."
+    },
+    {
+      "candidate_id": "B07",
+      "reason": "Causal attribution claim is narrative inference, not deterministic numeric task."
+    },
+    {
+      "candidate_id": "B09",
+      "reason": "Peer comparison requires defensibility review and peer-source mapping."
+    },
+    {
+      "candidate_id": "B10",
+      "reason": "EV/EBITDA multiple lacks dated market-value and EBITDA basis."
+    },
+    {
+      "candidate_id": "B11",
+      "reason": "Forward PE requires dated price and EPS estimate basis."
+    },
+    {
+      "candidate_id": "B12",
+      "reason": "Forward-looking investment conclusion requires H1 human review."
+    }
+  ],
+  "schema": {
+    "report_id": "",
+    "ticker": "",
+    "claim_id": "",
+    "report_section": "",
+    "report_excerpt": "",
+    "claim_quote": "",
+    "normalized_claim": "",
+    "extraction_note": "",
+    "claim_atomicity": "atomic | composite | narrative",
+    "claim_scope": "fact | calculation | valuation | comparison | inference | risk_disclosure",
+    "verification_source": {
+      "document_type": "",
+      "document_title": "",
+      "publication_date": "",
+      "as_of_period": "",
+      "available_before_report_date": true,
+      "revision_status": "final | preliminary | restated | not_applicable",
+      "source_priority": "primary | supplemental | contextual"
+    },
+    "evidence_excerpt": "",
+    "substantive_judgment": "supported | contradicted | unsupported | needs_human_review",
+    "citation_traceability": "strong | partial | weak | absent | not_applicable",
+    "failure_type": "",
+    "scoring_rule_id": "",
+    "execution_level": "L1_automated | L2_semi_automated | L3_rule_based_manual | H1_human_review",
+    "review_status": "",
+    "review_note": ""
+  },
+  "tasks": [
+    {
+      "report_id": "finrobot_official_nvda",
+      "ticker": "NVDA",
+      "claim_id": "NVDA-INVOV-B01-REV-VALUES",
+      "report_section": "Company Overview / Investment Overview",
+      "report_excerpt": "Nvidia has delivered a remarkable financial performance over the past three years, with revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024, representing a 125.9% year-over-year increase.",
+      "claim_quote": "revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024",
+      "normalized_claim": "NVDA revenue was approximately $26.9B in FY2023 and $60.9B in FY2024.",
+      "extraction_note": "Split from the same sentence; this task verifies the two revenue values, not the growth calculation.",
+      "claim_atomicity": "atomic",
+      "claim_scope": "fact",
+      "verification_source": {
+        "document_type": "Form 10-K",
+        "document_title": "NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024",
+        "publication_date": "2024-02-21",
+        "as_of_period": "FY2024 and FY2023",
+        "available_before_report_date": true,
+        "revision_status": "final",
+        "source_priority": "primary",
+        "url": "https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729"
+      },
+      "evidence_excerpt": "Revenue table reports total revenue of $60,922 million for Jan 28, 2024 and $26,974 million for Jan 29, 2023.",
+      "substantive_judgment": "supported",
+      "citation_traceability": "weak",
+      "failure_type": "citation_traceability_weak",
+      "scoring_rule_id": "NUM_ABS_001",
+      "execution_level": "L2_semi_automated",
+      "review_status": "source_mapped",
+      "review_note": "Substantively supported by primary source; report-level traceability is weak."
+    },
+    {
+      "report_id": "finrobot_official_nvda",
+      "ticker": "NVDA",
+      "claim_id": "NVDA-INVOV-B02-REV-GROWTH",
+      "report_section": "Company Overview / Investment Overview",
+      "report_excerpt": "Nvidia has delivered a remarkable financial performance over the past three years, with revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024, representing a 125.9% year-over-year increase.",
+      "claim_quote": "representing a 125.9% year-over-year increase",
+      "normalized_claim": "NVDA FY2024 revenue growth from FY2023 revenue was 125.9%.",
+      "extraction_note": "Derived calculation separated from the two reported revenue values.",
+      "claim_atomicity": "atomic",
+      "claim_scope": "calculation",
+      "verification_source": {
+        "document_type": "Form 10-K",
+        "document_title": "NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024",
+        "publication_date": "2024-02-21",
+        "as_of_period": "FY2024 and FY2023",
+        "available_before_report_date": true,
+        "revision_status": "final",
+        "source_priority": "primary",
+        "url": "https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729"
+      },
+      "evidence_excerpt": "Revenue table reports $60,922 million for FY2024 and $26,974 million for FY2023, with total revenue change of 126%.",
+      "substantive_judgment": "supported",
+      "citation_traceability": "weak",
+      "failure_type": "citation_traceability_weak",
+      "scoring_rule_id": "NUM_PCT_001",
+      "execution_level": "L2_semi_automated",
+      "review_status": "source_mapped",
+      "review_note": "Supported using exact source values; report's rounded revenue display would not independently reproduce 125.9%."
+    },
+    {
+      "report_id": "finrobot_official_nvda",
+      "ticker": "NVDA",
+      "claim_id": "NVDA-INVOV-B08-SGA-MARGIN",
+      "report_section": "Company Overview / Investment Overview",
+      "report_excerpt": "Operational leverage is evident, with SG&A as a percentage of revenue declining from 9% in FY2023 to just 2.1% in FY2026, supporting substantial contribution margin improvement.",
+      "claim_quote": "SG&A as a percentage of revenue declining from 9% in FY2023 to just 2.1% in FY2026",
+      "normalized_claim": "NVDA SG&A margin was approximately 9% in FY2023 and 2.1% in FY2026.",
+      "extraction_note": "Numeric SG&A margin claim separated from 'operational leverage is evident' inference.",
+      "claim_atomicity": "atomic",
+      "claim_scope": "fact",
+      "verification_source": {
+        "document_type": "Form 10-K",
+        "document_title": "NVIDIA Corporation Form 10-K for fiscal year ended January 25, 2026",
+        "publication_date": "2026-02-25",
+        "as_of_period": "FY2026 and FY2024 comparative columns",
+        "available_before_report_date": true,
+        "revision_status": "final",
+        "source_priority": "primary",
+        "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm"
+      },
+      "evidence_excerpt": "FY2026 10-K consolidated statement reports revenue of $215,938 million and sales, general and administrative expense of $4,579 million for Jan 25, 2026.",
+      "substantive_judgment": "supported",
+      "citation_traceability": "weak",
+      "failure_type": "citation_traceability_weak",
+      "scoring_rule_id": "NUM_PCT_001",
+      "execution_level": "L2_semi_automated",
+      "review_status": "source_mapped",
+      "review_note": "Supported after evaluator reconstructed the source path. Report does not identify the 2026 10-K or calculation basis."
+    }
+  ]
+}

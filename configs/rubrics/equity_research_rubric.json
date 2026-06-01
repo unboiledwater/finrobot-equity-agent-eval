@@ -1,0 +1,53 @@
+{
+  "name": "FinRobot Equity Research Rubric",
+  "scale": {
+    "min": 0,
+    "max": 5,
+    "anchors": {
+      "0": "missing or fabricated",
+      "1": "present but mostly unusable",
+      "2": "partial with material gaps",
+      "3": "adequate for directional review",
+      "4": "strong with minor gaps",
+      "5": "professional, complete, and auditable"
+    }
+  },
+  "dimensions": [
+    {
+      "id": "financial_data_consistency",
+      "weight": 0.18,
+      "description": "Checks whether historical financial data is present, internally consistent, sourced or traceable, and aligned with the narrative."
+    },
+    {
+      "id": "forecast_assumption_completeness",
+      "weight": 0.15,
+      "description": "Checks whether the report includes explicit three-year assumptions for growth, margins, cash flow drivers, and scenario logic."
+    },
+    {
+      "id": "dcf_explainability",
+      "weight": 0.17,
+      "description": "Checks whether WACC, terminal growth, free cash flow logic, fair value, and sensitivity analysis are explicit and numerically plausible."
+    },
+    {
+      "id": "peer_comparison_reasonableness",
+      "weight": 0.13,
+      "description": "Checks whether peer companies are industry-relevant and comparison metrics are normalized and interpreted correctly."
+    },
+    {
+      "id": "risk_coverage",
+      "weight": 0.12,
+      "description": "Checks breadth and specificity of business, financial, valuation, regulatory, macro, and data-quality risks."
+    },
+    {
+      "id": "investment_conclusion_evidence_chain",
+      "weight": 0.15,
+      "description": "Checks whether the recommendation follows from financial evidence, valuation, peer comparison, risks, and catalysts."
+    },
+    {
+      "id": "output_consistency_auditability",
+      "weight": 0.10,
+      "description": "Checks structure, section completeness, traceability, graceful failure handling, and cross-section consistency."
+    }
+  ]
+}
+

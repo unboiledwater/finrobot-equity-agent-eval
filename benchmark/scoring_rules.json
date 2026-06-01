@@ -1,0 +1,104 @@
+{
+  "version": "v1",
+  "principles": [
+    "FinRobot reports are evaluated artifacts, not ground truth.",
+    "Substantive accuracy and report-level citation traceability are scored separately.",
+    "LLM judgment is not used as the final correctness裁判.",
+    "Single-reviewer ambiguity is recorded in pilot/ambiguity_log.md rather than treated as inter-reviewer agreement."
+  ],
+  "execution_levels": {
+    "L1_automated": "Script can directly judge structured values.",
+    "L2_semi_automated": "Script recomputes or compares values; reviewer confirms source and basis.",
+    "L3_rule_based_manual": "Reviewer follows fixed rules and records evidence.",
+    "H1_human_review": "Judgment is reviewed but excluded from deterministic accuracy."
+  },
+  "traceability_gate": [
+    {
+      "claim_scope": "fact",
+      "rule": "Historical financial figures may enter L2 if the evaluator records a unique public source and period, even when report-level traceability is weak."
+    },
+    {
+      "claim_scope": "calculation",
+      "rule": "Simple calculations may enter L2 if all inputs are uniquely sourced and calculation_trace is recorded."
+    },
+    {
+      "claim_scope": "valuation",
+      "rule": "Market price, market cap, forward multiple, consensus, and target-price claims require a dated reproducible source; otherwise use H1."
+    },
+    {
+      "claim_scope": "comparison",
+      "rule": "Peer comparison without peer selection logic, metric basis, or date enters H1 defensibility review."
+    },
+    {
+      "claim_scope": "risk_disclosure",
+      "rule": "Risk and investment-thesis claims normally enter H1 unless the task is limited to a disclosed factual statement."
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "NUM_ABS_001",
+      "applies_to": "reported_numeric_value",
+      "execution_level": "L2_semi_automated",
+      "judgment_logic": {
+        "supported": "absolute_difference <= tolerance",
+        "contradicted": "absolute_difference > tolerance",
+        "needs_human_review": "source period, unit, or denominator is ambiguous"
+      },
+      "default_tolerance": {
+        "relative": 0.001,
+        "absolute": null
+      },
+      "required_evidence": [
+        "report_excerpt",
+        "claim_quote",
+        "primary_source_excerpt",
+        "as_of_period"
+      ]
+    },
+    {
+      "rule_id": "NUM_PCT_001",
+      "applies_to": "reported_percentage",
+      "execution_level": "L2_semi_automated",
+      "judgment_logic": {
+        "supported": "absolute_difference <= 0.1 percentage_points",
+        "contradicted": "absolute_difference > 0.1 percentage_points",
+        "needs_human_review": "source period or denominator is ambiguous"
+      },
+      "required_evidence": [
+        "report_excerpt",
+        "claim_quote",
+        "primary_source_excerpt",
+        "calculation_trace",
+        "as_of_period"
+      ]
+    },
+    {
+      "rule_id": "TRACE_001",
+      "applies_to": "citation_traceability",
+      "execution_level": "L3_rule_based_manual",
+      "judgment_logic": {
+        "strong": "source document, date or period, and calculation basis are identifiable from the report",
+        "partial": "source family is identified but date, period, or calculation basis is incomplete",
+        "weak": "only generic source footer is provided",
+        "absent": "no usable source trail is provided"
+      },
+      "required_evidence": [
+        "report_excerpt",
+        "report_source_disclosure"
+      ]
+    },
+    {
+      "rule_id": "HREV_001",
+      "applies_to": "peer_risk_inference_boundary",
+      "execution_level": "H1_human_review",
+      "judgment_logic": {
+        "needs_human_review": "claim requires comparability, materiality, or analytical overstatement assessment"
+      },
+      "required_evidence": [
+        "report_excerpt",
+        "claim_quote",
+        "review_note"
+      ]
+    }
+  ]
+}

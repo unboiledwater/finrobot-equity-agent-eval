@@ -1,0 +1,32 @@
+{
+  "task_id": "peer_comparison_semis",
+  "company": "NVIDIA Corporation",
+  "ticker": "NVDA",
+  "report_text": "NVDA is compared with AMD, AVGO, INTC, and QCOM on revenue growth, gross margin, operating margin, EV/EBITDA, P/E, and business mix. NVDA deserves a premium because of data center acceleration, CUDA ecosystem depth, and superior revenue growth, but the premium embeds execution risk and cyclicality. Recommendation: Hold because upside depends on sustained AI infrastructure demand and margins remaining elevated.",
+  "financials": {
+    "revenue": {"2022": 26914, "2023": 26974, "2024": 60922},
+    "operating_income": {"2022": 10041, "2023": 4224, "2024": 32972}
+  },
+  "forecast": {
+    "years": [2025, 2026, 2027],
+    "revenue_growth": [0.45, 0.25, 0.18],
+    "ebit_margin": [0.58, 0.56, 0.54]
+  },
+  "valuation": {
+    "method": "relative valuation",
+    "fair_value": 118.0
+  },
+  "peers": [
+    {"ticker": "AMD", "multiple": "EV/EBITDA", "value": 38.2},
+    {"ticker": "AVGO", "multiple": "EV/EBITDA", "value": 24.0},
+    {"ticker": "INTC", "multiple": "EV/EBITDA", "value": 13.5},
+    {"ticker": "QCOM", "multiple": "EV/EBITDA", "value": 12.9}
+  ],
+  "risks": ["AI demand digestion", "export controls", "customer concentration", "margin normalization"],
+  "recommendation": "Hold",
+  "trace": [
+    {"tool": "financial_data", "status": "ok"},
+    {"tool": "peer_comparison", "status": "ok"}
+  ]
+}
+
