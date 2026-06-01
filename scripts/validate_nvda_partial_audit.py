@@ -22,6 +22,13 @@ HTML_PATH = (
     / "official_report_audits"
     / "nvda_partial_audit.html"
 )
+CASE_HTML_PATH = (
+    ROOT
+    / "reports"
+    / "audit_outputs"
+    / "official_report_audits"
+    / "nvda_partial_audit_case_report.html"
+)
 
 EXPECTED_TASK_IDS = {
     "NVDA-INVOV-B01-REV-VALUES",
@@ -35,6 +42,11 @@ FORBIDDEN_TEXT = [
     "FinRobot produces accurate reports",
     "complete NVDA audit",
     "full NVDA report is accurate",
+    "完整 NVDA audit 已完成",
+    "FinRobot 整体可靠",
+    "generation comparison 已完成",
+    "enterprise controls 已实现",
+    "生产控制已实现",
 ]
 
 
@@ -53,6 +65,7 @@ def main() -> None:
     claims_data = load_json(CLAIMS_PATH)
     report = REPORT_PATH.read_text()
     html_report = HTML_PATH.read_text() if HTML_PATH.exists() else ""
+    case_html_report = CASE_HTML_PATH.read_text() if CASE_HTML_PATH.exists() else ""
 
     formal_tasks = tasks_data["tasks"]
     formal_task_ids = {task["claim_id"] for task in formal_tasks}
@@ -117,6 +130,11 @@ def main() -> None:
         assert_true(phrase not in report, f"forbidden overclaim phrase found: {phrase}")
         if html_report:
             assert_true(phrase not in html_report, f"forbidden overclaim phrase found in HTML: {phrase}")
+        if case_html_report:
+            assert_true(
+                phrase not in case_html_report,
+                f"forbidden overclaim phrase found in case HTML: {phrase}",
+            )
 
     if html_report:
         required_html_phrases = [
@@ -143,6 +161,56 @@ def main() -> None:
         for phrase in required_html_phrases:
             assert_true(phrase in html_report, f"missing HTML phrase: {phrase}")
 
+    if case_html_report:
+        required_case_html_phrases = [
+            "<title>NVDA Partial Audit Case Report",
+            'lang="zh-CN"',
+            'data-tab-target="overview"',
+            'data-tab-target="product-goal"',
+            'data-tab-target="audit-results"',
+            'data-tab-target="rubrics"',
+            'data-tab-target="improvements"',
+            'data-tab-target="implementation"',
+            "Overview / 项目概览",
+            "Product Goal / 服务目标",
+            "Audit Results / 审查结果",
+            "Rubrics &amp; Protocol / 评分与方法",
+            "Improvement Plan / 待改进项",
+            "Implementation / 代码与复现",
+            'data-code-target="task-schema"',
+            'data-code-target="verified-claim"',
+            'data-code-target="validation-script"',
+            "Product Requirement Statement",
+            "Non-Goals / 当前不服务的目标",
+            "Evaluation Dimensions",
+            "L2 Eligibility Rules",
+            "Scoring Execution Levels",
+            "Traceability Rubric",
+            "Implementation Map",
+            "Proposed Evidence-Gate Rules",
+            "These are audit-derived improvement requirements, not implemented production controls in v1.",
+            "Eligible L2 Claims",
+            "3 / 3",
+            "Weak Report-Level Traceability",
+            "B05",
+            "B06",
+            "B04",
+            "B10",
+            "B11",
+            "nvda_partial_audit_case_report.html",
+            "portfolio-facing case report / presentation layer",
+        ]
+        for phrase in required_case_html_phrases:
+            assert_true(phrase in case_html_report, f"missing case HTML phrase: {phrase}")
+        assert_true(
+            'class="tab-panel active" id="tab-overview"' in case_html_report,
+            "case HTML must default to Overview tab",
+        )
+        assert_true(
+            "function activateTab" in case_html_report and "code-tab-panel active" in case_html_report,
+            "case HTML must include real tab-switching behavior",
+        )
+
     print("PASSED: NVDA partial audit validation")
     print("Validated artifacts:")
     print(f"- {TASKS_PATH.relative_to(ROOT)}")
@@ -150,6 +218,8 @@ def main() -> None:
     print(f"- {REPORT_PATH.relative_to(ROOT)}")
     if html_report:
         print(f"- {HTML_PATH.relative_to(ROOT)}")
+    if case_html_report:
+        print(f"- {CASE_HTML_PATH.relative_to(ROOT)}")
     print("Validated metrics: L2 denominator, task IDs, supported count, traceability count, excluded-claim separation, report boundary text")
 
 

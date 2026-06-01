@@ -128,6 +128,7 @@ Current completed artifact status:
 - Excluded or deferred claims: 5 documented cases.
 - Canonical Markdown audit artifact: `reports/audit_outputs/official_report_audits/nvda_partial_audit.md`.
 - Human-readable HTML rendering: `reports/audit_outputs/official_report_audits/nvda_partial_audit.html`.
+- Portfolio-facing case report / presentation layer: `reports/audit_outputs/official_report_audits/nvda_partial_audit_case_report.html`.
 - Structured evidence map: `evidence/nvda/verified_claims.json`.
 - Validation script: `scripts/validate_nvda_partial_audit.py`.
 

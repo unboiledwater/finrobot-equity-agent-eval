@@ -11,6 +11,8 @@ traces/
 *.log
 *.tmp
 *.bak
+*.bundle
+*-upload.zip
 __pycache__/
 **/__pycache__/
 *.pyc

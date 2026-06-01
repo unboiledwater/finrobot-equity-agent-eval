@@ -128,6 +128,7 @@ Enterprise controls 只作为扩展设计，除非后续加入可运行测试。
 - 排除或待补证据 claims：5 个 documented cases。
 - Canonical Markdown 审查产物：`reports/audit_outputs/official_report_audits/nvda_partial_audit.md`。
 - 面向人类阅读的 HTML 展示层：`reports/audit_outputs/official_report_audits/nvda_partial_audit.html`。
+- 面向作品集展示的 case report / presentation layer：`reports/audit_outputs/official_report_audits/nvda_partial_audit_case_report.html`。
 - 结构化 evidence map：`evidence/nvda/verified_claims.json`。
 - 校验脚本：`scripts/validate_nvda_partial_audit.py`。
 

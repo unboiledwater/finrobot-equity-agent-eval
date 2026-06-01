@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NVDA Partial Audit Case Report — Evidence-Gated Evaluation</title>
+  <style>
+    :root {
+      --bg: #F8F5FD;
+      --primary: #4D77A7;
+      --secondary: #B2A4CF;
+      --secondary-2: #84A7CD;
+      --surface: #E9F5F1;
+      --surface-alt: #E2F4F3;
+      --soft: #DCDEEE;
+      --line: #D4D4D4;
+      --muted: #A1A0A5;
+      --warning: #FDE4E4;
+      --success: #E9F5F1;
+      --code: #DEE3EF;
+      --accent: #7F6E9C;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--primary);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+      font-size: 15px;
+      line-height: 1.62;
+    }
+    .page { width: min(1200px, calc(100% - 32px)); margin: 0 auto; padding: 26px 0 42px; }
+    header, .tab-panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+    }
+    h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: 0; color: var(--primary); }
+    h2 { margin: 0 0 12px; font-size: 20px; letter-spacing: 0; color: var(--primary); }
+    h3 { margin: 20px 0 10px; font-size: 16px; letter-spacing: 0; color: var(--primary); }
+    p { margin: 0 0 12px; }
+    code { background: var(--code); border-radius: 5px; padding: 2px 5px; font-size: 0.92em; color: var(--accent); }
+    .subtitle { font-size: 16px; color: var(--accent); margin-bottom: 10px; }
+    .lede { max-width: 900px; }
+    .status-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+    .summary-grid, .three-grid {
+      display: grid;
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .summary-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .three-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .metric, .info-box {
+      background: var(--surface-alt);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 13px;
+      min-height: 86px;
+    }
+    .metric .label { color: var(--accent); font-size: 12px; font-weight: 700; }
+    .metric .value { margin-top: 5px; font-size: 22px; color: var(--primary); font-weight: 800; }
+    .callout {
+      background: var(--warning);
+      border-left: 4px solid var(--secondary);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin: 14px 0;
+    }
+    .tabs, .code-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+    .tab-button, .code-tab-button, .copy-btn {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--primary);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font: inherit;
+    }
+    .tab-button.active, .code-tab-button.active { background: var(--primary); color: var(--surface); border-color: var(--primary); }
+    .tab-panel, .code-tab-panel { display: none; }
+    .tab-panel.active, .code-tab-panel.active { display: block; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; margin: 10px 0 16px; }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); min-width: 760px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+    th { background: var(--soft); color: var(--primary); font-size: 12px; font-weight: 800; }
+    tr:last-child td { border-bottom: 0; }
+    .num { text-align: right; }
+    details { max-width: 540px; }
+    summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+    .chip {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 9px;
+      border: 1px solid var(--line);
+      background: var(--soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .chip-supported, .chip-passed { background: var(--success); color: var(--primary); }
+    .chip-weak { background: #FEF1E8; color: var(--accent); }
+    .chip-downgraded, .chip-backlog { background: var(--warning); color: var(--accent); }
+    .chip-proposed { background: #DED8ED; color: var(--accent); }
+    .code-card { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); margin-top: 10px; }
+    .code-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; background: var(--soft); padding: 10px 12px; }
+    pre { margin: 0; max-height: 430px; overflow: auto; padding: 14px; background: var(--surface); color: var(--accent); }
+    pre code { background: transparent; padding: 0; color: var(--accent); }
+    .section-note { color: var(--accent); }
+    footer { margin-top: 18px; color: var(--accent); font-size: 13px; }
+    @media (max-width: 900px) {
+      .summary-grid, .three-grid { grid-template-columns: 1fr; }
+      .page { width: min(100% - 20px, 1200px); padding-top: 14px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>NVDA Partial Audit Case Report — Evidence-Gated Evaluation of an AI-Generated Equity Research Report</h1>
+      <div class="subtitle">基于证据闸门的 AI 金融研究报告局部审查案例</div>
+      <p class="lede">本案例展示如何将真实 AI 生成的金融研究报告转化为可审计的 claim-level 评测任务，并分别处理实质准确性、引用可追溯性、规则化降级与后续产品改进要求。</p>
+      <div class="status-row">
+        <span class="chip chip-passed">v1</span>
+        <span class="chip chip-weak">Partial Audit</span>
+        <span class="chip chip-weak">In Progress</span>
+        <span class="chip">FinRobot report = evaluated artifact</span>
+        <span class="chip chip-passed">Primary-source verification</span>
+      </div>
+      <div class="summary-grid">
+        <div class="metric"><div class="label">被测系统</div><div class="value">FinRobot</div><div>Official NVDA Equity Research Report</div></div>
+        <div class="metric"><div class="label">覆盖范围</div><div class="value">1 个章节</div><div>Investment Overview only</div></div>
+        <div class="metric"><div class="label">评分集合</div><div class="value">3 L2</div><div>eligible formal tasks</div></div>
+        <div class="metric"><div class="label">校验状态</div><div class="value">Passed</div><div>script-backed validation</div></div>
+      </div>
+      <div class="callout">当前 3/3 supported 只描述已满足 L2 条件的 claim 集合；不代表完整 NVDA 报告准确率，不代表被测系统的整体表现，也不代表 generation comparison 结论。</div>
+    </header>
+
+    <nav class="tabs" aria-label="Case report tabs">
+      <button type="button" class="tab-button active" data-tab-target="overview">Overview / 项目概览</button>
+      <button type="button" class="tab-button" data-tab-target="product-goal">Product Goal / 服务目标</button>
+      <button type="button" class="tab-button" data-tab-target="audit-results">Audit Results / 审查结果</button>
+      <button type="button" class="tab-button" data-tab-target="rubrics">Rubrics &amp; Protocol / 评分与方法</button>
+      <button type="button" class="tab-button" data-tab-target="improvements">Improvement Plan / 待改进项</button>
+      <button type="button" class="tab-button" data-tab-target="implementation">Implementation / 代码与复现</button>
+    </nav>
+
+    <main>
+      <section class="tab-panel active" id="tab-overview">
+        <h2>Overview / 项目概览</h2>
+        <div class="three-grid">
+          <div class="info-box"><h3>Problem</h3><p>AI 可以生成看似专业的 equity research report，但可能出现数字或期间错误、估值指标缺少日期与口径、推断强于证据、正文缺乏可独立复核来源链。</p></div>
+          <div class="info-box"><h3>Evaluation Response</h3><p>本项目不重新生成报告，而是抽取可核验 claims、映射公开一手来源、确定性评分可复核项目，并对证据不闭合的 claims 明确降级。</p></div>
+          <div class="info-box"><h3>Product Value</h3><p>该方法帮助产品和评测团队判断输出是否可核验、结论是否越过证据边界、人工 reviewer 应集中在哪里、哪些失败应由 harness 提前拦截。</p></div>
+        </div>
+        <h3>Current Case Snapshot</h3>
+        <div class="table-wrap"><table><thead><tr><th>指标</th><th>当前结果</th></tr></thead><tbody><tr><td>Audited Company</td><td class="num">NVIDIA / NVDA</td></tr><tr><td>Audited Section</td><td class="num">Investment Overview</td></tr><tr><td>Eligible L2 Claims</td><td class="num">3</td></tr><tr><td>Supported within Eligible L2 Set</td><td class="num">3 / 3</td></tr><tr><td>Strong Report-Level Traceability</td><td class="num">0</td></tr><tr><td>Weak Report-Level Traceability</td><td class="num">3</td></tr><tr><td>Rule-Based Downgrade Cases</td><td class="num">2</td></tr><tr><td>Traceability / Backlog Claims</td><td class="num">3</td></tr></tbody></table></div>
+        <div class="callout">FinRobot 官方报告是被审查对象，不是事实来源；验证依据是 NVIDIA 公开披露材料与可复核来源。</div>
+      </section>
+
+      <section class="tab-panel" id="tab-product-goal">
+        <h2>Product Goal / 服务目标</h2>
+        <h3>What product problem does this audit framework address?</h3>
+        <p>专业金融 Agent 的输出不能只满足“读起来像研究报告”，还需要满足数字可以回到来源、估值指标可以重建口径、披露事实与分析推断可区分、证据不足时拒绝进入确定性结论、审核人员能快速定位真正需要人工复核的部分。</p>
+        <div class="table-wrap"><table><thead><tr><th>角色</th><th>需要解决的问题</th></tr></thead><tbody><tr><td>Agent Product / Eval Team</td><td>判断专业报告输出是否可靠，并形成可复用 benchmark</td></tr><tr><td>Engineer</td><td>获得明确、可实现、可校验的 evidence-gate 规则</td></tr><tr><td>Human Reviewer</td><td>只集中复核高风险或证据不闭合 claims</td></tr><tr><td>Enterprise User in High-Responsibility Tasks</td><td>获得可追踪、可解释、不夸大证据强度的输出</td></tr></tbody></table></div>
+        <h3>Product Requirement Statement</h3>
+        <div class="callout">面向 AI 生成的专业报告，建立一套 evaluator workflow：将报告表述转化为绑定证据的 claims；对可复核事实进行确定性评分；对无法闭合口径的指标主动降级；将错误与缺口转化为产品改进要求，同时避免对整体报告可靠性作过度声称。</div>
+        <h3>Non-Goals / 当前不服务的目标</h3>
+        <div class="table-wrap"><table><thead><tr><th>Non-Goal</th><th>边界说明</th></tr></thead><tbody><tr><td>不生成股票推荐</td><td>本页面不是投资建议，也不评价 NVDA 投资价值。</td></tr><tr><td>不完整审查 FinRobot</td><td>当前只覆盖 NVDA Investment Overview 已映射 claims。</td></tr><tr><td>不测试本地 FinRobot generation pipeline</td><td>本轮不运行 fresh-run。</td></tr><tr><td>不证明 evidence-gated generation 优于 baseline</td><td>v2 才开展 generation comparison。</td></tr><tr><td>不声称企业控制已实现</td><td>多租户、权限、脱敏、生产审计只属于 proposed extension。</td></tr></tbody></table></div>
+        <h3>Why Financial Reports as Test Material</h3>
+        <div class="table-wrap"><table><thead><tr><th>特征</th><th>对 Eval 的价值</th></tr></thead><tbody><tr><td>数字密集</td><td>可验证单位、期间、公式和计算结果</td></tr><tr><td>来源公开</td><td>可使用公开披露材料形成 evidence chain</td></tr><tr><td>推断与事实混合</td><td>可测试 reasoning boundary</td></tr><tr><td>估值依赖日期与口径</td><td>可测试 traceability 与 downgrade logic</td></tr><tr><td>错误具有现实后果</td><td>体现高责任任务中的可靠性要求</td></tr></tbody></table></div>
+      </section>
+
+      <section class="tab-panel" id="tab-audit-results">
+        <h2>Audit Results / 审查结果</h2>
+        <div class="three-grid">
+          <div class="info-box"><h3>Substantive Accuracy — Eligible L2 Set</h3><div class="table-wrap"><table><thead><tr><th>Metric</th><th>Result</th></tr></thead><tbody><tr><td>Eligible L2 Formal Tasks</td><td class="num">3</td></tr><tr><td>Supported</td><td class="num">3</td></tr><tr><td>Contradicted</td><td class="num">0</td></tr><tr><td>Unsupported</td><td class="num">0</td></tr><tr><td>Accuracy within Eligible L2 Set</td><td class="num">3 / 3</td></tr></tbody></table></div></div>
+          <div class="info-box"><h3>Report-Level Citation Traceability</h3><div class="table-wrap"><table><thead><tr><th>Metric</th><th>Result</th></tr></thead><tbody><tr><td>Strong</td><td class="num">0</td></tr><tr><td>Partial</td><td class="num">0</td></tr><tr><td>Weak</td><td class="num">3</td></tr><tr><td>Absent</td><td class="num">0</td></tr></tbody></table></div></div>
+          <div class="info-box"><h3>产品解释</h3><p>The audited claims are substantively supported after external primary-source verification, but the report itself does not provide strong claim-level traceability.</p><p>因此，内容正确与报告可审计性被视为两个独立评测结果。</p></div>
+        </div>
+        <h3>Eligible Formal Claims</h3>
+        <div class="table-wrap"><table><thead><tr><th>Task ID</th><th>Claim Quote</th><th>Source Closure</th><th>Substantive Judgment</th><th>Traceability</th><th>Execution Level</th><th>Details</th></tr></thead><tbody><tr><td><code>NVDA-INVOV-B01-REV-VALUES</code></td><td>revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024</td><td><span class="chip chip-passed">Closed</span></td><td><span class="chip chip-supported">Supported</span></td><td><span class="chip chip-weak">Weak</span></td><td><code>L2_semi_automated</code></td><td><details><summary>查看证据链</summary><div class="table-wrap"><table><thead><tr><th>字段</th><th>内容</th></tr></thead><tbody><tr><td>Report excerpt</td><td>Nvidia has delivered a remarkable financial performance over the past three years, with revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024, representing a 125.9% year-over-year increase.</td></tr><tr><td>Claim quote</td><td>revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024</td></tr><tr><td>Normalized claim</td><td>NVDA revenue was approximately $26.9B in FY2023 and $60.9B in FY2024.</td></tr><tr><td>Extraction note</td><td>Split from the same sentence; this task verifies the two revenue values, not the growth calculation.</td></tr><tr><td>Verification source</td><td>NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024</td></tr><tr><td>Evidence excerpt</td><td>Revenue table reports total revenue of $60,922 million for Jan 28, 2024 and $26,974 million for Jan 29, 2023.</td></tr><tr><td>Calculation trace</td><td>60,922 million = $60.922B; 26,974 million = $26.974B. Report rounds/truncates to $60.9B and $26.9B.</td></tr><tr><td>Scoring rule</td><td><code>NUM_ABS_001</code></td></tr><tr><td>Review note</td><td>Substantively supported by primary source. Report-level traceability is weak because the FinRobot report gives only a generic source footer.</td></tr></tbody></table></div></details></td></tr><tr><td><code>NVDA-INVOV-B02-REV-GROWTH</code></td><td>representing a 125.9% year-over-year increase</td><td><span class="chip chip-passed">Closed</span></td><td><span class="chip chip-supported">Supported</span></td><td><span class="chip chip-weak">Weak</span></td><td><code>L2_semi_automated</code></td><td><details><summary>查看证据链</summary><div class="table-wrap"><table><thead><tr><th>字段</th><th>内容</th></tr></thead><tbody><tr><td>Report excerpt</td><td>Nvidia has delivered a remarkable financial performance over the past three years, with revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024, representing a 125.9% year-over-year increase.</td></tr><tr><td>Claim quote</td><td>representing a 125.9% year-over-year increase</td></tr><tr><td>Normalized claim</td><td>NVDA FY2024 revenue growth from FY2023 revenue was 125.9%.</td></tr><tr><td>Extraction note</td><td>Derived calculation separated from the two reported revenue values.</td></tr><tr><td>Verification source</td><td>NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024</td></tr><tr><td>Evidence excerpt</td><td>Revenue table reports $60,922 million for FY2024 and $26,974 million for FY2023, with total revenue change of 126%.</td></tr><tr><td>Calculation trace</td><td>(60,922 - 26,974) / 26,974 = 1.25862 = 125.9% when rounded to one decimal place.</td></tr><tr><td>Scoring rule</td><td><code>NUM_PCT_001</code></td></tr><tr><td>Review note</td><td>Supported using exact source values; report&#x27;s rounded revenue display would not independently reproduce 125.9%.</td></tr></tbody></table></div></details></td></tr><tr><td><code>NVDA-INVOV-B08-SGA-MARGIN</code></td><td>SG&amp;A as a percentage of revenue declining from 9% in FY2023 to just 2.1% in FY2026</td><td><span class="chip chip-passed">Closed</span></td><td><span class="chip chip-supported">Supported</span></td><td><span class="chip chip-weak">Weak</span></td><td><code>L2_semi_automated</code></td><td><details><summary>查看证据链</summary><div class="table-wrap"><table><thead><tr><th>字段</th><th>内容</th></tr></thead><tbody><tr><td>Report excerpt</td><td>Operational leverage is evident, with SG&amp;A as a percentage of revenue declining from 9% in FY2023 to just 2.1% in FY2026, supporting substantial contribution margin improvement.</td></tr><tr><td>Claim quote</td><td>SG&amp;A as a percentage of revenue declining from 9% in FY2023 to just 2.1% in FY2026</td></tr><tr><td>Normalized claim</td><td>NVDA SG&amp;A margin was approximately 9% in FY2023 and 2.1% in FY2026.</td></tr><tr><td>Extraction note</td><td>Numeric SG&amp;A margin claim separated from &#x27;operational leverage is evident&#x27; inference.</td></tr><tr><td>Verification source</td><td>NVIDIA Corporation Form 10-K for fiscal year ended January 25, 2026</td></tr><tr><td>Evidence excerpt</td><td>FY2026 10-K consolidated statement reports revenue of $215,938 million and sales, general and administrative expense of $4,579 million for Jan 25, 2026.</td></tr><tr><td>Calculation trace</td><td>4,579 / 215,938 = 0.02121 = 2.1%. FY2023 9% is supported directionally by FY2024 10-K common-size statement showing sales, general and administrative expense at 9.1% for FY2023.</td></tr><tr><td>Scoring rule</td><td><code>NUM_PCT_001</code></td></tr><tr><td>Review note</td><td>Supported after evaluator reconstructed the source path. Report does not identify the 2026 10-K or calculation basis.</td></tr></tbody></table></div></details></td></tr></tbody></table></div>
+        <h3>Rule-Based Downgrade Cases</h3>
+        <p class="section-note">这些 claims 被记录而不是被静默丢弃；排除它们可以避免口径不确定的指标污染 deterministic accuracy。</p>
+        <div class="table-wrap"><table><thead><tr><th>Claim</th><th>Why It Was Not Scored</th><th>Triggered Rule</th><th>Re-entry Condition</th></tr></thead><tbody><tr><td><code>B05</code></td><td>EBITDA has also accelerated, reaching $35.6 billion in FY2024</td><td>缺少与报告指标定义完全一致的 EBITDA 定义和可复现输入。</td><td><code>L2_SOURCE_CLOSURE_REQUIRED</code></td><td>取得已披露定义或可复现 reconciliation。</td></tr><tr><td><code>B06</code></td><td>EBITDA margin improving from 22.2% in FY2023 to 58.4% in FY2024</td><td>EBITDA margin 依赖尚未闭合的 EBITDA 定义。</td><td><code>L2_DEPENDENT_METRIC_UNCLOSED</code></td><td>闭合 B05，并确认收入分母期间一致。</td></tr></tbody></table></div>
+        <h3>Traceability / Backlog Claims</h3>
+        <div class="table-wrap"><table><thead><tr><th>Claim</th><th>Report Quote</th><th>Missing Basis</th><th>Why This Matters</th><th>Next Verification Action</th></tr></thead><tbody><tr><td><code>B04</code></td><td>a 68.3% CAGR through FY2027</td><td>period / endpoints unclear</td><td>CAGR 没有明确期间就无法复算。</td><td>识别起点期间、终点期间和来源值。</td></tr><tr><td><code>B10</code></td><td>EV/EBITDA valuation, while high (43.5x in FY2024), is trending lower (31.4x in FY2026)</td><td>dated EV basis, net debt, EBITDA basis absent</td><td>市场敏感 multiple 没有日期与定义就不可审计。</td><td>绑定带日期的市场与财务输入。</td></tr><tr><td><code>B11</code></td><td>PE ratio of 37.7x FY2026E</td><td>dated price and EPS estimate source absent</td><td>Forward valuation 依赖预测 provenance。</td><td>定位带日期的股价和 forecast EPS 来源。</td></tr></tbody></table></div>
+        <h3>Source Register</h3>
+        <div class="table-wrap"><table><thead><tr><th>Source ID</th><th>Type</th><th>Document</th><th>Publication Date</th><th>Period</th><th>Availability</th></tr></thead><tbody><tr><td><code>SRC-NVDA-FY2024-10K</code></td><td>Form 10-K</td><td>NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024</td><td>2024-02-21</td><td>FY2024 and FY2023</td><td><span class="chip chip-passed">报告前可用</span></td></tr><tr><td><code>SRC-NVDA-FY2026-10K</code></td><td>Form 10-K</td><td>NVIDIA Corporation Form 10-K for fiscal year ended January 25, 2026</td><td>2026-02-25</td><td>FY2026 and FY2024 comparative columns</td><td><span class="chip chip-passed">报告前可用</span></td></tr></tbody></table></div>
+      </section>
+
+      <section class="tab-panel" id="tab-rubrics">
+        <h2>Rubrics &amp; Protocol / 评分与方法</h2>
+        <h3>Evaluation Dimensions</h3>
+        <div class="table-wrap"><table><thead><tr><th>Dimension</th><th>What Is Evaluated</th><th>Judgment Output</th><th>Included in Current Score?</th></tr></thead><tbody><tr><td>Substantive Accuracy</td><td>Claim 是否被 primary source 支持</td><td>Supported / Contradicted / Unsupported</td><td>对 eligible L2 纳入</td></tr><tr><td>Citation Traceability</td><td>报告自身是否给出可复核来源路径</td><td>Strong / Partial / Weak / Absent</td><td>单独统计，不与 accuracy 混合</td></tr><tr><td>Source Temporal Alignment</td><td>核验来源是否在报告时点可用</td><td>Aligned / Mismatch / Needs Review</td><td>作为 eligibility gate</td></tr><tr><td>Claim Boundary Preservation</td><td>reviewer 是否保持原文边界</td><td>Pass / Needs Note</td><td>作为 protocol requirement</td></tr><tr><td>Downgrade Discipline</td><td>不可复核 claim 是否被排除</td><td>Downgraded / Backlog</td><td>不进入 denominator</td></tr><tr><td>Reasoning Boundary</td><td>报告是否将推断包装成事实</td><td>Human Review</td><td>当前章节未进入 L2 总分</td></tr></tbody></table></div>
+        <h3>L2 Eligibility Rules</h3>
+        <div class="table-wrap"><table><thead><tr><th>条件</th><th>要求</th></tr></thead><tbody><tr><td>Claim 类型</td><td>可独立核验的数值事实或可复算指标</td></tr><tr><td>原文边界</td><td>claim_quote 可以回溯至报告原文</td></tr><tr><td>来源闭合</td><td>primary source 与 evidence excerpt 已闭合</td></tr><tr><td>时点一致</td><td>source publication date 不晚于报告对应时点</td></tr><tr><td>口径明确</td><td>指标口径、期间与计算输入明确</td></tr><tr><td>规则适用</td><td>适用预设 deterministic scoring rule</td></tr><tr><td>排除条件</td><td>不需要 reviewer 额外业务推断或补写缺失定义</td></tr></tbody></table></div>
+        <h3>Scoring Execution Levels</h3>
+        <div class="table-wrap"><table><thead><tr><th>Level</th><th>Definition</th><th>Current Use</th></tr></thead><tbody><tr><td>L1_automated</td><td>Script can directly judge structured values.</td><td>当前未纳入确定性分母</td></tr><tr><td>L2_semi_automated</td><td>Script recomputes or compares values; reviewer confirms source and basis.</td><td>当前 3 个 formal tasks</td></tr><tr><td>L3_rule_based_manual</td><td>Reviewer follows fixed rules and records evidence.</td><td>当前未纳入确定性分母</td></tr><tr><td>H1_human_review</td><td>Judgment is reviewed but excluded from deterministic accuracy.</td><td>当前未纳入确定性分母</td></tr></tbody></table></div>
+        <h3>Claim Extraction Protocol</h3>
+        <div class="callout"><code>report_excerpt</code> → <code>claim_quote</code> → <code>normalized_claim</code> → <code>extraction_note</code> → <code>verification source</code> → <code>judgment</code></div>
+        <div class="table-wrap"><table><thead><tr><th>规则</th><th>说明</th></tr></thead><tbody><tr><td>不允许 reviewer 强化原文</td><td>normalized_claim 只能做最小化核验规范化</td></tr><tr><td>复合 claim 应拆分</td><td>事实 claim 与叙事 claim 分开判定</td></tr><tr><td>Narrative 不得改写为数字 claim</td><td>避免 reviewer 创造被测对象没有说过的结论</td></tr><tr><td>无法闭合必须降级</td><td>进入 downgrade 或 backlog，而不是硬塞进 L2</td></tr></tbody></table></div>
+        <h3>Traceability Rubric</h3>
+        <div class="table-wrap"><table><thead><tr><th>Rating</th><th>标准</th></tr></thead><tbody><tr><td>Strong</td><td>报告正文或直接引用提供具体来源、期间和可重建输入</td></tr><tr><td>Partial</td><td>来源与期间大致可识别，但缺少部分复算输入</td></tr><tr><td>Weak</td><td>报告只有泛化来源或结论，外部 reviewer 需自行重建证据路径</td></tr><tr><td>Absent</td><td>没有能够合理关联至该 claim 的来源信息</td></tr></tbody></table></div>
+      </section>
+
+      <section class="tab-panel" id="tab-improvements">
+        <h2>Improvement Plan / 待改进项</h2>
+        <h3>Improvement Findings Derived from Current Audit</h3>
+        <div class="table-wrap"><table><thead><tr><th>Finding</th><th>Evidence from Audit</th><th>Product Implication</th><th>Suggested Improvement</th></tr></thead><tbody><tr><td>财务 claim 可以正确，但正文引用链过弱</td><td>3 个 L2 tasks 均 supported，但 traceability 均 weak</td><td>用户无法仅凭报告独立复核关键数字</td><td>报告生成时绑定 filing、period、table/line reference</td></tr><tr><td>EBITDA 指标无法闭合口径</td><td>B05/B06 被规则化降级</td><td>Agent 可能使用数据源计算字段而未披露定义</td><td>对 non-GAAP / derived metrics 强制输出定义与 reconciliation</td></tr><tr><td>CAGR 缺少期间端点</td><td>B04 进入 backlog</td><td>看似精确的增长结论不可复算</td><td>对 CAGR 强制输出 start period、end period、formula inputs</td></tr><tr><td>估值倍数缺少日期与预测来源</td><td>B10/B11 进入 backlog</td><td>市场敏感指标无法审计</td><td>对 EV/EBITDA、forward PE 强制输出 as-of date、price source、estimate source</td></tr></tbody></table></div>
+        <h3>Proposed Evidence-Gate Rules</h3>
+        <div class="table-wrap"><table><thead><tr><th>Proposed Gate</th><th>Trigger</th><th>Required Output</th><th>Current Status</th></tr></thead><tbody><tr><td>Historical Figure Citation Gate</td><td>报告陈述历史财务数字</td><td>filing + period + evidence reference</td><td><span class="chip chip-proposed">Proposed</span></td></tr><tr><td>Derived Metric Definition Gate</td><td>EBITDA / margin / CAGR 等派生指标</td><td>formula + source inputs + metric definition</td><td><span class="chip chip-proposed">Proposed</span></td></tr><tr><td>Market-Sensitive Valuation Gate</td><td>EV/EBITDA / PE / target price</td><td>as-of date + price source + denominator basis</td><td><span class="chip chip-proposed">Proposed</span></td></tr><tr><td>Claim Type Disclosure Gate</td><td>前瞻、比较或风险判断</td><td>fact / calculation / inference 标签</td><td><span class="chip chip-proposed">Proposed</span></td></tr></tbody></table></div>
+        <div class="callout">These are audit-derived improvement requirements, not implemented production controls in v1. 这些规则是由审查发现推导出的产品改进要求，不是 v1 已经实现的生产控制。</div>
+        <h3>Next Evaluation Work</h3>
+        <div class="table-wrap"><table><thead><tr><th>下一步</th><th>目的</th></tr></thead><tbody><tr><td>补齐 Investment Overview 剩余可核验 claims 的 source mapping</td><td>扩大 NVDA 章节覆盖范围</td></tr><tr><td>决定 B05/B06 是否可通过公开来源重新闭合</td><td>验证 EBITDA 相关降级是否能重新进入评分</td></tr><tr><td>为 B04/B10/B11 查找必要时点与输入来源</td><td>处理 CAGR 与 valuation multiple 的 traceability 缺口</td></tr><tr><td>完成 NVDA 更完整的 chapter-level audit 后扩展 COP / TSLA</td><td>验证框架跨行业适用性</td></tr><tr><td>v2 才开展 generation comparison</td><td>避免把 proposed workflow 写成已验证结果</td></tr></tbody></table></div>
+      </section>
+
+      <section class="tab-panel" id="tab-implementation">
+        <h2>Implementation / 代码与复现</h2>
+        <h3>Implementation Map</h3>
+        <div class="table-wrap"><table><thead><tr><th>Capability</th><th>Artifact</th><th>Purpose</th></tr></thead><tbody><tr><td>Task Registry</td><td><code>benchmark/report_audit_tasks.json</code></td><td>定义 formal tasks 与评分范围</td></tr><tr><td>Claim Evidence Records</td><td><code>evidence/nvda/verified_claims.json</code></td><td>存储 claim、来源、判断、降级和 backlog 状态</td></tr><tr><td>Primary Source Register</td><td><code>evidence/nvda/primary_sources.md</code></td><td>登记公司公开来源与时间可用性</td></tr><tr><td>Canonical Audit Narrative</td><td><code>reports/audit_outputs/official_report_audits/nvda_partial_audit.md</code></td><td>报告规范文本源</td></tr><tr><td>Validation Script</td><td><code>scripts/validate_nvda_partial_audit.py</code></td><td>复算统计并检查边界措辞</td></tr><tr><td>Rendered Case Report</td><td><code>nvda_partial_audit_case_report.html</code></td><td>面向人类阅读的作品集展示层</td></tr></tbody></table></div>
+        <h3>Validation Status</h3>
+        <div class="table-wrap"><table><thead><tr><th>Check</th><th>Status</th></tr></thead><tbody><tr><td>JSON parseability</td><td><span class="chip chip-passed">Passed</span></td></tr><tr><td>L2 denominator reconstruction</td><td><span class="chip chip-passed">Passed</span></td></tr><tr><td>Judgment count reconstruction</td><td><span class="chip chip-passed">Passed</span></td></tr><tr><td>Traceability count reconstruction</td><td><span class="chip chip-passed">Passed</span></td></tr><tr><td>Excluded claims isolation</td><td><span class="chip chip-passed">Passed</span></td></tr><tr><td>Boundary wording check</td><td><span class="chip chip-passed">Passed</span></td></tr></tbody></table></div>
+        <h3>Source Register Excerpt</h3>
+        
+      <div class="code-card">
+        <div class="code-head">
+          <span><code>evidence/nvda/primary_sources.md</code></span>
+          <button type="button" class="copy-btn" data-copy-target="evidence-nvda-primary-sources-md">复制</button>
+        </div>
+        <pre><code id="evidence-nvda-primary-sources-md" class="language-markdown"># NVDA Primary Sources
+
+## Report Under Audit
+
+- `report_id`: `finrobot_official_nvda`
+- `source_file`: `reports/source/official_examples/finrobot_official_nvda.html`
+- `report_generated`: `2026-03-22 19:48`
+- `audited_section`: `Company Overview / Investment Overview`
+
+## Primary Sources Used
+
+### SRC-NVDA-FY2024-10K
+
+- Document type: Form 10-K / Annual Report
+- Document title: NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024
+- Publication date: 2024-02-21
+- As-of period: Fiscal years ended January 28, 2024 and January 29, 2023
+- Available before report date: true
+- Source priority: primary
+- URL: https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729
+
+Evidence excerpts:
+
+- Results of operations table: revenue was `$60,922 million` for year ended January 28, 2024 and `$26,974 million` for year ended January 29, 2023.
+- Same table reports total revenue change of `$33,948 million` and `126%`.
+- Common-size income statement reports sales, general and administrative expense as `4.4%` of revenue for fiscal 2024 and `9.1%` for fiscal 2023.
+
+### SRC-NVDA-FY2024-RESULTS
+
+- Document type: Earnings release
+- Document title: NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2024
+- Publication date: 2024-02-21
+- As-of period: Fiscal 2024 and fiscal 2023
+- Available before report date: true
+- Source priority: primary
+- URL: https://i</code></pre>
+      </div>
+    
+        <h3>Code Tabs</h3>
+        <div class="code-tabs" aria-label="Implementation code tabs"><button type="button" class="code-tab-button active" data-code-target="task-schema">Task Schema</button><button type="button" class="code-tab-button" data-code-target="verified-claim">Verified Claim</button><button type="button" class="code-tab-button" data-code-target="scoring-rules">Scoring Rules</button><button type="button" class="code-tab-button" data-code-target="validation-script">Validation Script</button><button type="button" class="code-tab-button" data-code-target="output-boundary">Output Boundary</button></div>
+        <div class="code-tab-panel active" id="code-task-schema">
+      <div class="code-card">
+        <div class="code-head">
+          <span><code>benchmark/report_audit_tasks.json</code></span>
+          <button type="button" class="copy-btn" data-copy-target="benchmark-report-audit-tasks-json">复制</button>
+        </div>
+        <pre><code id="benchmark-report-audit-tasks-json" class="language-json">{
+  &quot;report_id&quot;: &quot;finrobot_official_nvda&quot;,
+  &quot;ticker&quot;: &quot;NVDA&quot;,
+  &quot;claim_id&quot;: &quot;NVDA-INVOV-B01-REV-VALUES&quot;,
+  &quot;report_section&quot;: &quot;Company Overview / Investment Overview&quot;,
+  &quot;report_excerpt&quot;: &quot;Nvidia has delivered a remarkable financial performance over the past three years, with revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024, representing a 125.9% year-over-year increase.&quot;,
+  &quot;claim_quote&quot;: &quot;revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024&quot;,
+  &quot;normalized_claim&quot;: &quot;NVDA revenue was approximately $26.9B in FY2023 and $60.9B in FY2024.&quot;,
+  &quot;extraction_note&quot;: &quot;Split from the same sentence; this task verifies the two revenue values, not the growth calculation.&quot;,
+  &quot;claim_atomicity&quot;: &quot;atomic&quot;,
+  &quot;claim_scope&quot;: &quot;fact&quot;,
+  &quot;verification_source&quot;: {
+    &quot;document_type&quot;: &quot;Form 10-K&quot;,
+    &quot;document_title&quot;: &quot;NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024&quot;,
+    &quot;publication_date&quot;: &quot;2024-02-21&quot;,
+    &quot;as_of_period&quot;: &quot;FY2024 and FY2023&quot;,
+    &quot;available_before_report_date&quot;: true,
+    &quot;revision_status&quot;: &quot;final&quot;,
+    &quot;source_priority&quot;: &quot;primary&quot;,
+    &quot;url&quot;: &quot;https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729&quot;
+  },
+  &quot;evidence_excerpt&quot;: &quot;Revenue table reports total revenue of $60,922 million for Jan 28, 2024 and $26,974 million for Jan 29, 2023.&quot;,
+  &quot;substantive_judgment&quot;: &quot;supported&quot;,
+  &quot;citation_traceability&quot;: &quot;weak&quot;,
+  &quot;failure_type&quot;: &quot;citation_traceability_weak&quot;,
+  &quot;scoring_rule_id&quot;: &quot;NUM_ABS_001&quot;,
+  &quot;execution_level&quot;: &quot;L2_semi_automated&quot;,
+  &quot;review_status&quot;: &quot;source_mapped&quot;,
+  &quot;review_note&quot;: &quot;Substantively supported by primary source; report-level traceability is weak.&quot;
+}</code></pre>
+      </div>
+    </div><div class="code-tab-panel" id="code-verified-claim">
+      <div class="code-card">
+        <div class="code-head">
+          <span><code>evidence/nvda/verified_claims.json</code></span>
+          <button type="button" class="copy-btn" data-copy-target="evidence-nvda-verified-claims-json">复制</button>
+        </div>
+        <pre><code id="evidence-nvda-verified-claims-json" class="language-json">{
+  &quot;formal_l2_claim&quot;: {
+    &quot;candidate_id&quot;: &quot;B01&quot;,
+    &quot;formal_task_id&quot;: &quot;NVDA-INVOV-B01-REV-VALUES&quot;,
+    &quot;report_section&quot;: &quot;Company Overview / Investment Overview&quot;,
+    &quot;report_excerpt&quot;: &quot;Nvidia has delivered a remarkable financial performance over the past three years, with revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024, representing a 125.9% year-over-year increase.&quot;,
+    &quot;claim_quote&quot;: &quot;revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024&quot;,
+    &quot;normalized_claim&quot;: &quot;NVDA revenue was approximately $26.9B in FY2023 and $60.9B in FY2024.&quot;,
+    &quot;extraction_note&quot;: &quot;Split from the same sentence; this task verifies the two revenue values, not the growth calculation.&quot;,
+    &quot;claim_atomicity&quot;: &quot;atomic&quot;,
+    &quot;claim_scope&quot;: &quot;fact&quot;,
+    &quot;verification_source&quot;: {
+      &quot;source_id&quot;: &quot;SRC-NVDA-FY2024-10K&quot;,
+      &quot;document_type&quot;: &quot;Form 10-K&quot;,
+      &quot;document_title&quot;: &quot;NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024&quot;,
+      &quot;publication_date&quot;: &quot;2024-02-21&quot;,
+      &quot;as_of_period&quot;: &quot;FY2024 and FY2023&quot;,
+      &quot;available_before_report_date&quot;: true,
+      &quot;revision_status&quot;: &quot;final&quot;,
+      &quot;source_priority&quot;: &quot;primary&quot;,
+      &quot;url&quot;: &quot;https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729&quot;
+    },
+    &quot;evidence_excerpt&quot;: &quot;Revenue table reports total revenue of $60,922 million for Jan 28, 2024 and $26,974 million for Jan 29, 2023.&quot;,
+    &quot;calculation_trace&quot;: &quot;60,922 million = $60.922B; 26,974 million = $26.974B. Report rounds/truncates to $60.9B and $26.9B.&quot;,
+    &quot;substantive_judgment&quot;: &quot;supported&quot;,
+    &quot;citation_traceability&quot;: &quot;weak&quot;,
+    &quot;evaluator_assisted_verifiability&quot;: &quot;strong&quot;,
+    &quot;failure_type&quot;: &quot;citation_traceability_weak&quot;,
+    &quot;scoring_rule_id&quot;: &quot;NUM_ABS_001&quot;,
+    &quot;execution_level&quot;: &quot;L2_semi_automated&quot;,
+    &quot;review_status&quot;: &quot;source_mapped&quot;,
+    &quot;review_note&quot;: &quot;Substantively supported by primary source. Report-level traceability is weak because the FinRobot report gives only a generic source footer.&quot;
+  },
+  &quot;downgrade_claim&quot;: {
+    &quot;candidate_id&quot;: &quot;B05&quot;,
+    &quot;formal_task_id&quot;: null,
+    &quot;report_section&quot;: &quot;Company Overview / Investment Overview&quot;,
+    &quot;report_excerpt&quot;: &quot;The company&#x27;s EBITDA has also accelerated, reaching $35.6 billion in FY2024 and expected to climb to $86.1 billion in FY2025 and $144.6 billion in FY2026.&quot;,
+    &quot;claim_quote&quot;: &quot;EBITDA has also accelerated, reaching $35.6 billion in FY2024&quot;,
+    &quot;normalized_claim&quot;: &quot;NVDA EBITDA was $35.6B in FY2024.&quot;,
+    &quot;extraction_note&quot;: &quot;Historical EBITDA separated from forward EBITDA estimates.&quot;,
+    &quot;claim_atomicity&quot;: &quot;atomic&quot;,
+    &quot;claim_scope&quot;: &quot;fact&quot;,
+    &quot;verification_source&quot;: {
+      &quot;source_id&quot;: &quot;SRC-NVDA-FY2024-10K&quot;,
+      &quot;document_type&quot;: &quot;Form 10-K&quot;,
+      &quot;document_title&quot;: &quot;NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024&quot;,
+      &quot;publication_date&quot;: &quot;2024-02-21&quot;,
+      &quot;as_of_period&quot;: &quot;FY2024&quot;,
+      &quot;available_before_report_date&quot;: true,
+      &quot;revision_status&quot;: &quot;final&quot;,
+      &quot;source_priority&quot;: &quot;pri
+  ...
+}</code></pre>
+      </div>
+    </div><div class="code-tab-panel" id="code-scoring-rules">
+      <div class="code-card">
+        <div class="code-head">
+          <span><code>benchmark/scoring_rules.json</code></span>
+          <button type="button" class="copy-btn" data-copy-target="benchmark-scoring-rules-json">复制</button>
+        </div>
+        <pre><code id="benchmark-scoring-rules-json" class="language-json">{
+  &quot;execution_levels&quot;: {
+    &quot;L1_automated&quot;: &quot;Script can directly judge structured values.&quot;,
+    &quot;L2_semi_automated&quot;: &quot;Script recomputes or compares values; reviewer confirms source and basis.&quot;,
+    &quot;L3_rule_based_manual&quot;: &quot;Reviewer follows fixed rules and records evidence.&quot;,
+    &quot;H1_human_review&quot;: &quot;Judgment is reviewed but excluded from deterministic accuracy.&quot;
+  },
+  &quot;traceability_gate&quot;: [
+    {
+      &quot;claim_scope&quot;: &quot;fact&quot;,
+      &quot;rule&quot;: &quot;Historical financial figures may enter L2 if the evaluator records a unique public source and period, even when report-level traceability is weak.&quot;
+    },
+    {
+      &quot;claim_scope&quot;: &quot;calculation&quot;,
+      &quot;rule&quot;: &quot;Simple calculations may enter L2 if all inputs are uniquely sourced and calculation_trace is recorded.&quot;
+    },
+    {
+      &quot;claim_scope&quot;: &quot;valuation&quot;,
+      &quot;rule&quot;: &quot;Market price, market cap, forward multiple, consensus, and target-price claims require a dated reproducible source; otherwise use H1.&quot;
+    },
+    {
+      &quot;claim_scope&quot;: &quot;comparison&quot;,
+      &quot;rule&quot;: &quot;Peer comparison without peer selection logic, metric basis, or date enters H1 defensibility review.&quot;
+    },
+    {
+      &quot;claim_scope&quot;: &quot;risk_disclosure&quot;,
+      &quot;rule&quot;: &quot;Risk and investment-thesis claims normally enter H1 unless the task is limited to a disclosed factual statement.&quot;
+    }
+  ],
+  &quot;rules&quot;: [
+    {
+      &quot;rule_id&quot;: &quot;NUM_ABS_001&quot;,
+      &quot;applies_to&quot;: &quot;reported_numeric_value&quot;,
+      &quot;execution_level&quot;: &quot;L2_semi_automated&quot;,
+      &quot;judgment_logic&quot;: {
+        &quot;supported&quot;: &quot;absolute_difference &lt;= tolerance&quot;,
+        &quot;contradicted&quot;: &quot;absolute_difference &gt; tolerance&quot;,
+        &quot;needs_human_review&quot;: &quot;source period, unit, or denominator is ambiguous&quot;
+      },
+      &quot;default_tolerance&quot;: {
+        &quot;relative&quot;: 0.001,
+        &quot;absolute&quot;: null
+      },
+      &quot;required_evidence&quot;: [
+        &quot;report_excerpt&quot;,
+        &quot;claim_quote&quot;,
+        &quot;primary_source_excerpt&quot;,
+        &quot;as_of_period&quot;
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;NUM_PCT_001&quot;,
+      &quot;applies_to&quot;: &quot;reported_percentage&quot;,
+      &quot;execution_level&quot;: &quot;L2_semi_automated&quot;,
+      &quot;judgment_logic&quot;: {
+        &quot;supported&quot;: &quot;absolute_difference &lt;= 0.1 percentage_points&quot;,
+        &quot;contradicted&quot;: &quot;absolute_difference &gt; 0.1 percentage_points&quot;,
+        &quot;needs_human_review&quot;: &quot;source period or denominator is ambiguous&quot;
+      },
+      &quot;required_evidence&quot;: [
+        &quot;report_excerpt&quot;,
+        &quot;claim_quote&quot;,
+        &quot;primary_source_excerpt&quot;,
+        &quot;calculation_trace&quot;,
+        &quot;as_of_period&quot;
+      ]
+    },
+    {
+      &quot;rule_id&quot;: &quot;TRACE_001&quot;,
+      &quot;applies_to&quot;: &quot;citation_traceability&quot;,
+      &quot;execution_level&quot;: &quot;L3_rule_based_manual&quot;,
+      &quot;judgment_logic&quot;: {
+        &quot;strong&quot;: &quot;source document, date or period, and calculation basis are identifiable from the report&quot;,
+        &quot;partial&quot;: &quot;source family is identified b
+  ...
+}</code></pre>
+      </div>
+    </div><div class="code-tab-panel" id="code-validation-script">
+      <div class="code-card">
+        <div class="code-head">
+          <span><code>scripts/validate_nvda_partial_audit.py</code></span>
+          <button type="button" class="copy-btn" data-copy-target="scripts-validate-nvda-partial-audit-py">复制</button>
+        </div>
+        <pre><code id="scripts-validate-nvda-partial-audit-py" class="language-python">/ &quot;nvda_partial_audit_case_report.html&quot;
+)
+
+EXPECTED_TASK_IDS = {
+    &quot;NVDA-INVOV-B01-REV-VALUES&quot;,
+    &quot;NVDA-INVOV-B02-REV-GROWTH&quot;,
+    &quot;NVDA-INVOV-B08-SGA-MARGIN&quot;,
+}
+EXPECTED_FORMAL_CANDIDATES = {&quot;B01&quot;, &quot;B02&quot;, &quot;B08&quot;}
+EXPECTED_EXCLUDED = {&quot;B05&quot;, &quot;B06&quot;, &quot;B04&quot;, &quot;B10&quot;, &quot;B11&quot;}
+FORBIDDEN_TEXT = [
+
+    l2_claims = [claims[c] for c in sorted(EXPECTED_FORMAL_CANDIDATES)]
+    assert_true(
+        all(item[&quot;substantive_judgment&quot;] == &quot;supported&quot; for item in l2_claims),
+        &quot;all formal L2 claims must be supported&quot;,
+    )
+    assert_true(
+        all(item[&quot;citation_traceability&quot;] == &quot;weak&quot; for item in l2_claims),
+        &quot;all formal L2 claims must have weak report-level traceability&quot;,
+    )
+    assert_true(
+        all(item[&quot;execution_level&quot;] == &quot;L2_semi_automated&quot; for item in l2_claims),
+
+    )
+    assert_true(
+        all(item[&quot;citation_traceability&quot;] == &quot;weak&quot; for item in l2_claims),
+        &quot;all formal L2 claims must have weak report-level traceability&quot;,
+    )
+    assert_true(
+        all(item[&quot;execution_level&quot;] == &quot;L2_semi_automated&quot; for item in l2_claims),
+        &quot;all formal claims must be L2_semi_automated&quot;,
+    )
+
+    excluded_status = {claims[c][&quot;review_status&quot;] for c in EXPECTED_EXCLUDED}
+
+    )
+    assert_true(
+        all(claims[c][&quot;formal_task_id&quot;] is None for c in EXPECTED_EXCLUDED),
+        &quot;excluded/backlog candidates must not have formal_task_id&quot;,
+    )
+
+    required_report_phrases = [
+        &quot;# NVDA Partial Audit Report — Investment Overview&quot;,
+        &quot;Status: Partial audit / in progress&quot;,
+        &quot;Coverage: Investment Overview section only&quot;,
+        &quot;Formal scored claims: 3 L2 tasks&quot;,
+
+            assert_true(phrase in html_report, f&quot;missing HTML phrase: {phrase}&quot;)
+
+    if case_html_report:
+        required_case_html_phrases = [
+            &quot;&lt;title&gt;NVDA Partial Audit Case Report&quot;,
+            &#x27;lang=&quot;zh-CN&quot;&#x27;,
+            &#x27;data-tab-target=&quot;overview&quot;&#x27;,
+            &#x27;data-tab-target=&quot;product-goal&quot;&#x27;,
+            &#x27;data-tab-target=&quot;audit-results&quot;&#x27;,
+            &#x27;data-tab-target=&quot;rubrics&quot;&#x27;,
+            &#x27;data-tab-target=&quot;improvements&quot;&#x27;,</code></pre>
+      </div>
+    </div><div class="code-tab-panel" id="code-output-boundary">
+      <div class="code-card">
+        <div class="code-head">
+          <span><code>reports/audit_outputs/official_report_audits/nvda_partial_audit.md</code></span>
+          <button type="button" class="copy-btn" data-copy-target="reports-audit-outputs-official-report-audits-nvda-partial-audit-md">复制</button>
+        </div>
+        <pre><code id="reports-audit-outputs-official-report-audits-nvda-partial-audit-md" class="language-markdown">## 5. Deterministic Score Summary
+
+| Metric | Result |
+| --- | --- |
+| Total eligible L2 formal tasks | 3 |
+| Supported | 3 |
+| Contradicted | 0 |
+| Unsupported | 0 |
+| Substantive accuracy within eligible L2 set | 3/3 |
+
+These results apply only to the three eligible L2 claims currently mapped from the `Investment Overview` section.</code></pre>
+      </div>
+    </div>
+      </section>
+    </main>
+
+    <footer>
+      Canonical facts remain in JSON/Markdown. This HTML is a portfolio-facing case report / presentation layer, not a new source of audit judgments.
+    </footer>
+  </div>
+
+  <script>
+    const tabButtons = Array.from(document.querySelectorAll('.tab-button'));
+    const tabPanels = Array.from(document.querySelectorAll('.tab-panel'));
+    function activateTab(id, updateHash = true) {
+      tabButtons.forEach((button) => button.classList.toggle('active', button.dataset.tabTarget === id));
+      tabPanels.forEach((panel) => panel.classList.toggle('active', panel.id === `tab-${id}`));
+      if (updateHash) history.replaceState(null, '', `#${id}`);
+    }
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => activateTab(button.dataset.tabTarget));
+    });
+    const initial = location.hash ? location.hash.slice(1) : 'overview';
+    activateTab(tabButtons.some((button) => button.dataset.tabTarget === initial) ? initial : 'overview', false);
+
+    const codeButtons = Array.from(document.querySelectorAll('.code-tab-button'));
+    const codePanels = Array.from(document.querySelectorAll('.code-tab-panel'));
+    codeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        codeButtons.forEach((item) => item.classList.toggle('active', item === button));
+        codePanels.forEach((panel) => panel.classList.toggle('active', panel.id === `code-${button.dataset.codeTarget}`));
+      });
+    });
+    document.querySelectorAll('.copy-btn').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        if (!target) return;
+        await navigator.clipboard.writeText(target.innerText);
+        button.innerText = '已复制';
+        setTimeout(() => { button.innerText = '复制'; }, 1200);
+      });
+    });
+  </script>
+</body>
+</html>
