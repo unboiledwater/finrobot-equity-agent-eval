@@ -23,18 +23,19 @@
         "available_before_report_date": true,
         "revision_status": "final",
         "source_priority": "primary",
-        "url": "https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729"
+        "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm"
       },
       "evidence_excerpt": "Revenue table reports total revenue of $60,922 million for Jan 28, 2024 and $26,974 million for Jan 29, 2023.",
-      "calculation_trace": "60,922 million = $60.922B; 26,974 million = $26.974B. Report rounds/truncates to $60.9B and $26.9B.",
-      "substantive_judgment": "supported",
+      "calculation_trace": "60,922 million = $60.922B, displayed as $60.9B. 26,974 million = $26.974B; the report value $26.9B is truncation-compatible at one decimal place, not ordinary rounding. Under NUM_ABS_001 alone, the FY2023 relative difference is about 0.274%, above the 0.1% relative tolerance; display-precision handling is therefore required.",
+      "substantive_judgment": "supported_with_presentation_caveat",
       "citation_traceability": "weak",
       "evaluator_assisted_verifiability": "strong",
       "failure_type": "citation_traceability_weak",
-      "scoring_rule_id": "NUM_ABS_001",
+      "scoring_rule_id": "DISPLAY_PRECISION_TRUNC_001",
       "execution_level": "L2_semi_automated",
       "review_status": "source_mapped",
-      "review_note": "Substantively supported by primary source. Report-level traceability is weak because the FinRobot report gives only a generic source footer."
+      "review_note": "Supported with presentation caveat. FY2024 is one-decimal compatible; FY2023 is truncation-compatible, not ordinary rounding. Report-level traceability remains weak.",
+      "presentation_caveat": "B01 remains eligible L2 but is excluded from strict supported count because FY2023 is truncation-compatible rather than ordinary rounding-compatible."
     },
     {
       "candidate_id": "B02",
@@ -55,7 +56,7 @@
         "available_before_report_date": true,
         "revision_status": "final",
         "source_priority": "primary",
-        "url": "https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729"
+        "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm"
       },
       "evidence_excerpt": "Revenue table reports $60,922 million for FY2024 and $26,974 million for FY2023, with total revenue change of 126%.",
       "calculation_trace": "(60,922 - 26,974) / 26,974 = 1.25862 = 125.9% when rounded to one decimal place.",
@@ -87,7 +88,7 @@
         "available_before_report_date": true,
         "revision_status": "final",
         "source_priority": "primary",
-        "url": "https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729"
+        "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm"
       },
       "evidence_excerpt": "Mapped primary source reports GAAP operating income and other statement items, but does not directly report EBITDA as a GAAP line item.",
       "calculation_trace": null,
@@ -119,7 +120,7 @@
         "available_before_report_date": true,
         "revision_status": "final",
         "source_priority": "primary",
-        "url": "https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729"
+        "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm"
       },
       "evidence_excerpt": "Mapped primary source reports gross margin, SG&A percentage, operating income, and net income; EBITDA margin is not directly reported.",
       "calculation_trace": null,
@@ -154,7 +155,7 @@
         "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm"
       },
       "evidence_excerpt": "FY2026 10-K consolidated statement reports revenue of $215,938 million and sales, general and administrative expense of $4,579 million for Jan 25, 2026.",
-      "calculation_trace": "4,579 / 215,938 = 0.02121 = 2.1%. FY2023 9% is supported directionally by FY2024 10-K common-size statement showing sales, general and administrative expense at 9.1% for FY2023.",
+      "calculation_trace": "4,579 / 215,938 = 0.02121 = 2.1%. FY2023 9% is supported within the predefined 0.1 percentage-point tolerance by FY2024 10-K common-size statement showing sales, general and administrative expense at 9.1% for FY2023.",
       "substantive_judgment": "supported",
       "citation_traceability": "weak",
       "evaluator_assisted_verifiability": "strong",
@@ -162,7 +163,7 @@
       "scoring_rule_id": "NUM_PCT_001",
       "execution_level": "L2_semi_automated",
       "review_status": "source_mapped",
-      "review_note": "Supported after evaluator reconstructed the source path. Report does not identify the 2026 10-K or calculation basis."
+      "review_note": "Supported after evaluator reconstructed the source path. Numeric claim supported does not mean the operational leverage inference was scored. Report does not identify the 2026 10-K or calculation basis."
     },
     {
       "candidate_id": "B04",

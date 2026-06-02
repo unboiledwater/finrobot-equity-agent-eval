@@ -1,7 +1,7 @@
 {
   "version": "v1",
-  "status": "formal_nvda_seed_tasks_started",
-  "description": "NVDA Investment Overview segmentation pilot is complete. Three source-mapped formal tasks have been added; EBITDA-related candidates are downgraded pending a reproducible EBITDA definition.",
+  "status": "formal_nvda_seed_tasks_started_with_presentation_caveat",
+  "description": "NVDA Investment Overview segmentation pilot is complete. Three source-mapped eligible L2 tasks have been added; B01 is not strictly supported under ordinary numeric tolerance and is marked supported_with_presentation_caveat under a display-precision/truncation rule.",
   "pilot_source": "pilot/nvda/round_b_rule_based_extraction.json",
   "verified_claims_source": "evidence/nvda/verified_claims.json",
   "eligible_pilot_candidates": [
@@ -96,16 +96,17 @@
         "available_before_report_date": true,
         "revision_status": "final",
         "source_priority": "primary",
-        "url": "https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729"
+        "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm"
       },
       "evidence_excerpt": "Revenue table reports total revenue of $60,922 million for Jan 28, 2024 and $26,974 million for Jan 29, 2023.",
-      "substantive_judgment": "supported",
+      "substantive_judgment": "supported_with_presentation_caveat",
       "citation_traceability": "weak",
       "failure_type": "citation_traceability_weak",
-      "scoring_rule_id": "NUM_ABS_001",
+      "scoring_rule_id": "DISPLAY_PRECISION_TRUNC_001",
       "execution_level": "L2_semi_automated",
       "review_status": "source_mapped",
-      "review_note": "Substantively supported by primary source; report-level traceability is weak."
+      "review_note": "Supported with presentation caveat. B01 remains eligible L2 but is excluded from strict supported count.",
+      "presentation_caveat": "FY2023 source value is $26.974B and report value is $26.9B. This is truncation-compatible at one decimal place, not ordinary rounding, and exceeds NUM_ABS_001 relative tolerance."
     },
     {
       "report_id": "finrobot_official_nvda",
@@ -126,7 +127,7 @@
         "available_before_report_date": true,
         "revision_status": "final",
         "source_priority": "primary",
-        "url": "https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729"
+        "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm"
       },
       "evidence_excerpt": "Revenue table reports $60,922 million for FY2024 and $26,974 million for FY2023, with total revenue change of 126%.",
       "substantive_judgment": "supported",
@@ -165,7 +166,7 @@
       "scoring_rule_id": "NUM_PCT_001",
       "execution_level": "L2_semi_automated",
       "review_status": "source_mapped",
-      "review_note": "Supported after evaluator reconstructed the source path. Report does not identify the 2026 10-K or calculation basis."
+      "review_note": "Supported within predefined 0.1 percentage-point tolerance for numeric SG&A margin only; operational leverage inference is not scored."
     }
   ]
 }

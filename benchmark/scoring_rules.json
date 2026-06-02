@@ -99,6 +99,27 @@
         "claim_quote",
         "review_note"
       ]
+    },
+    {
+      "rule_id": "DISPLAY_PRECISION_TRUNC_001",
+      "applies_to": "displayed_financial_value",
+      "execution_level": "L2_semi_automated",
+      "judgment_logic": {
+        "supported_with_presentation_caveat": "reported_value equals source_value truncated to the displayed decimal precision; this does not count as strict support under NUM_ABS_001",
+        "not_supported_by_display_precision": "reported_value matches neither rounding nor truncation at the displayed precision",
+        "needs_human_review": "display precision, unit, period, or source value is ambiguous"
+      },
+      "default_tolerance": {
+        "display_decimal_places": 1
+      },
+      "required_evidence": [
+        "report_excerpt",
+        "claim_quote",
+        "primary_source_excerpt",
+        "as_of_period",
+        "calculation_trace",
+        "presentation_caveat"
+      ]
     }
   ]
 }

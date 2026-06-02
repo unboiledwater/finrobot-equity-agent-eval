@@ -37,6 +37,8 @@ EXPECTED_TASK_IDS = {
     "NVDA-INVOV-B08-SGA-MARGIN",
 }
 EXPECTED_FORMAL_CANDIDATES = {"B01", "B02", "B08"}
+EXPECTED_STRICT_SUPPORTED = {"B02", "B08"}
+EXPECTED_PRESENTATION_CAVEAT = {"B01"}
 EXPECTED_EXCLUDED = {"B05", "B06", "B04", "B10", "B11"}
 FORBIDDEN_TEXT = [
     "NVDA report is accurate",
@@ -86,8 +88,12 @@ def main() -> None:
 
     l2_claims = [claims[c] for c in sorted(EXPECTED_FORMAL_CANDIDATES)]
     assert_true(
-        all(item["substantive_judgment"] == "supported" for item in l2_claims),
-        "all formal L2 claims must be supported",
+        all(claims[c]["substantive_judgment"] == "supported" for c in EXPECTED_STRICT_SUPPORTED),
+        "B02/B08 must be strictly supported",
+    )
+    assert_true(
+        all(claims[c]["substantive_judgment"] == "supported_with_presentation_caveat" for c in EXPECTED_PRESENTATION_CAVEAT),
+        "B01 must be supported_with_presentation_caveat",
     )
     assert_true(
         all(item["citation_traceability"] == "weak" for item in l2_claims),
@@ -115,6 +121,9 @@ def main() -> None:
         "Formal scored claims: 3 L2 tasks",
         "Excluded or deferred claims: 5 documented cases",
         "Not covered: full-report accuracy, cross-company results, generation comparison",
+        "3/3 not contradicted",
+        "Strictly supported",
+        "Supported with presentation caveat",
         "## 3. Eligibility Rules for Formal Scoring",
         "L2_SOURCE_CLOSURE_REQUIRED",
         "L2_DEPENDENT_METRIC_UNCLOSED",
@@ -149,7 +158,9 @@ def main() -> None:
             "代码映射",
             "主要功能与代码/数据映射",
             "分母限定为符合条件的 L2 tasks",
-            "L2 合格集合内的实质准确率",
+            "Strictly Supported",
+            "Supported with Presentation Caveat",
+            "L2 合格集合内未被反驳",
             "HTML 是面向人类阅读的展示层",
             "reports/audit_outputs/official_report_audits/nvda_partial_audit.md",
             "#F8F5FD",
@@ -191,7 +202,9 @@ def main() -> None:
             "Proposed Evidence-Gate Rules",
             "These are audit-derived improvement requirements, not implemented production controls in v1.",
             "Eligible L2 Claims",
-            "3 / 3",
+            "3/3 not contradicted",
+            "Strictly Supported",
+            "Supported with Presentation Caveat",
             "Weak Report-Level Traceability",
             "B05",
             "B06",
@@ -213,7 +226,7 @@ def main() -> None:
         )
         case_palette = set(re.findall(r"#[0-9A-Fa-f]{6}", case_html_report))
         assert_true(
-            case_palette <= {"#F8F5FD", "#4D77A7", "#D4D4D4"},
+            {color.upper() for color in case_palette} <= {"#F5F4ED", "#1B365D", "#D8D0C0"},
             f"case HTML uses unexpected colors: {sorted(case_palette)}",
         )
         assert_true(
@@ -230,7 +243,7 @@ def main() -> None:
         print(f"- {HTML_PATH.relative_to(ROOT)}")
     if case_html_report:
         print(f"- {CASE_HTML_PATH.relative_to(ROOT)}")
-    print("Validated metrics: L2 denominator, task IDs, supported count, traceability count, excluded-claim separation, report boundary text")
+    print("Validated metrics: L2 denominator, task IDs, strict supported count, presentation-caveat count, traceability count, excluded-claim separation, report boundary text")
 
 
 if __name__ == "__main__":

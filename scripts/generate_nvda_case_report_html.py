@@ -465,7 +465,7 @@ def main() -> None:
         <div class="metric"><div class="label">评分集合</div><div class="value">3 L2</div><div>eligible formal tasks</div></div>
         <div class="metric"><div class="label">校验状态</div><div class="value">Passed</div><div>script-backed validation</div></div>
       </div>
-      <div class="callout">当前 3/3 supported 只描述已满足 L2 条件的 claim 集合；不代表完整 NVDA 报告准确率，不代表被测系统的整体表现，也不代表 generation comparison 结论。</div>
+      <div class="callout">当前 3/3 not contradicted 只描述已满足 L2 条件的 claim 集合；其中 2 项 strictly supported，1 项 supported with display-precision caveat。不代表完整 NVDA 报告准确率，不代表被测系统的整体表现，也不代表 generation comparison 结论。</div>
     </header>
 
     <nav class="tabs" aria-label="Case report tabs">
@@ -486,7 +486,7 @@ def main() -> None:
           <div class="info-box"><h3>Product Value</h3><p>该方法帮助产品和评测团队判断输出是否可核验、结论是否越过证据边界、人工 reviewer 应集中在哪里、哪些失败应由 harness 提前拦截。</p></div>
         </div>
         <h3>Current Case Snapshot</h3>
-        {table(["指标", "当前结果"], [["Audited Company", "NVIDIA / NVDA"], ["Audited Section", "Investment Overview"], ["Eligible L2 Claims", "3"], ["Supported within Eligible L2 Set", "3 / 3"], ["Strong Report-Level Traceability", "0"], ["Weak Report-Level Traceability", str(weak)], ["Rule-Based Downgrade Cases", "2"], ["Traceability / Backlog Claims", "3"]], numeric_cols={1})}
+        {table(["指标", "当前结果"], [["Audited Company", "NVIDIA / NVDA"], ["Audited Section", "Investment Overview"], ["Eligible L2 Claims", "3"], ["Strictly Supported", "2"], ["Supported with Presentation Caveat", "1"], ["Not Contradicted within Eligible L2 Set", "3 / 3"], ["Strong Report-Level Traceability", "0"], ["Weak Report-Level Traceability", str(weak)], ["Rule-Based Downgrade Cases", "2"], ["Traceability / Backlog Claims", "3"]], numeric_cols={1})}
         <div class="callout">FinRobot 官方报告是被审查对象，不是事实来源；验证依据是 NVIDIA 公开披露材料与可复核来源。</div>
       </section>
 

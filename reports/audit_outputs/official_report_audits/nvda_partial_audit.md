@@ -10,7 +10,7 @@ Not covered: full-report accuracy, cross-company results, generation comparison
 
 This artifact audits selected claims from the `Investment Overview` section of `finrobot_official_nvda`.
 
-The denominator for deterministic scoring is limited to claims that satisfy the L2 eligibility rules in this report. The current `3/3 supported` result applies only to the three eligible L2 formal tasks listed below. It does not represent the accuracy or traceability of the complete NVDA report.
+The denominator for deterministic scoring is limited to claims that satisfy the L2 eligibility rules in this report. The current result is `3/3 not contradicted`: 2 claims are strictly supported and 1 claim is supported with a display-precision caveat. It does not represent the accuracy or traceability of the complete NVDA report.
 
 ## 2. Evaluated Artifact and Source Register
 
@@ -45,7 +45,7 @@ All listed sources were available before the FinRobot report timestamp.
 
 | Task ID | Candidate | Claim quote | Substantive judgment | Report-level traceability | Execution |
 | --- | --- | --- | --- | --- | --- |
-| `NVDA-INVOV-B01-REV-VALUES` | `B01` | `revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024` | supported | weak | L2 |
+| `NVDA-INVOV-B01-REV-VALUES` | `B01` | `revenue surging from $26.9 billion in FY2023 to $60.9 billion in FY2024` | supported_with_presentation_caveat | weak | L2 |
 | `NVDA-INVOV-B02-REV-GROWTH` | `B02` | `representing a 125.9% year-over-year increase` | supported | weak | L2 |
 | `NVDA-INVOV-B08-SGA-MARGIN` | `B08` | `SG&A as a percentage of revenue declining from 9% in FY2023 to just 2.1% in FY2026` | supported | weak | L2 |
 
@@ -54,12 +54,13 @@ All listed sources were available before the FinRobot report timestamp.
 | Metric | Result |
 | --- | --- |
 | Total eligible L2 formal tasks | 3 |
-| Supported | 3 |
+| Strictly supported | 2 |
+| Supported with presentation caveat | 1 |
 | Contradicted | 0 |
 | Unsupported | 0 |
-| Substantive accuracy within eligible L2 set | 3/3 |
+| Not contradicted within eligible L2 set | 3/3 |
 
-These results apply only to the three eligible L2 claims currently mapped from the `Investment Overview` section.
+These results apply only to the three eligible L2 claims currently mapped from the `Investment Overview` section. B01 is not counted in the strict supported count because FY2023 `$26.9B` is truncation-compatible with source `$26.974B`, not ordinary rounding-compatible under `NUM_ABS_001`.
 
 ## 6. Report-Level Citation Traceability Summary
 
@@ -118,7 +119,8 @@ Expected validation:
 
 - L2 denominator: 3
 - Formal task IDs: `NVDA-INVOV-B01-REV-VALUES`, `NVDA-INVOV-B02-REV-GROWTH`, `NVDA-INVOV-B08-SGA-MARGIN`
-- Supported L2 claims: 3
+- Strictly supported L2 claims: 2
+- Supported with presentation caveat: 1
 - Weak traceability among L2 claims: 3
 - Excluded/deferred candidates separated from denominator: `B05`, `B06`, `B04`, `B10`, `B11`
 

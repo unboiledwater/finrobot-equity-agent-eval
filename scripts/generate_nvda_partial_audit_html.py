@@ -340,7 +340,7 @@ def main() -> None:
         <div class="metric"><div class="label">校验</div><div class="value">已通过</div><div>由脚本复算与边界检查支持</div></div>
       </div>
       <div class="callout">
-        当前 <strong>3/3 supported</strong> 只适用于已满足 L2 纳入条件的正式任务集合；不代表整份 NVDA 报告准确率、跨公司结果，也不代表 generation comparison 结论。
+        当前 <strong>3/3 not contradicted</strong> 只适用于已满足 L2 纳入条件的正式任务集合；其中 2 项 strictly supported，1 项 supported with display-precision caveat。不代表整份 NVDA 报告准确率、跨公司结果，也不代表 generation comparison 结论。
       </div>
     </header>
 

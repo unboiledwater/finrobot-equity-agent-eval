@@ -11,13 +11,14 @@
 
 ### SRC-NVDA-FY2024-10K
 
+- Source Provider: SEC EDGAR
 - Document type: Form 10-K / Annual Report
 - Document title: NVIDIA Corporation Form 10-K for fiscal year ended January 28, 2024
 - Publication date: 2024-02-21
 - As-of period: Fiscal years ended January 28, 2024 and January 29, 2023
 - Available before report date: true
 - Source priority: primary
-- URL: https://fintel.io/doc/sec-nvidia-corp-1045810-10k-2024-february-21-19774-1729
+- URL: https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm
 
 Evidence excerpts:
 
@@ -27,6 +28,7 @@ Evidence excerpts:
 
 ### SRC-NVDA-FY2024-RESULTS
 
+- Source Provider: NVIDIA Investor Relations
 - Document type: Earnings release
 - Document title: NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2024
 - Publication date: 2024-02-21
@@ -42,6 +44,7 @@ Evidence excerpts:
 
 ### SRC-NVDA-FY2026-10K
 
+- Source Provider: SEC EDGAR
 - Document type: Form 10-K / Annual Report
 - Document title: NVIDIA Corporation Form 10-K for fiscal year ended January 25, 2026
 - Publication date: 2026-02-25
@@ -57,6 +60,7 @@ Evidence excerpts:
 
 ### SRC-NVDA-FY2026-RESULTS
 
+- Source Provider: SEC EDGAR
 - Document type: Earnings release exhibit
 - Document title: NVIDIA Announces Financial Results for Fourth Quarter and Fiscal 2026
 - Publication date: 2026-02-25

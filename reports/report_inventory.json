@@ -27,7 +27,10 @@
       "peer_or_risk_review": null
     },
     "available_primary_sources": [],
-    "v1_selection_status": "primary_case"
+    "v1_selection_status": "pilot_deep_audit",
+    "sample_id": "FR-NVDA-001",
+    "v1_role": "pilot_deep_audit",
+    "audit_status": "partial_audit_completed"
   },
   {
     "report_id": "finrobot_official_msft",
@@ -51,13 +54,19 @@
     ],
     "source_disclosure_structure": "Generic footer only: Company Filings, FMP, Yahoo Finance, AI4Finance Estimates. No claim-level citations.",
     "candidate_claim_density": {
-      "financial_accuracy": null,
-      "evidence_grounding": null,
-      "reasoning_boundary": null,
-      "peer_or_risk_review": null
+      "financial_accuracy": 2,
+      "evidence_grounding": 4,
+      "reasoning_boundary": 1,
+      "peer_or_risk_review": 1
     },
-    "available_primary_sources": [],
-    "v1_selection_status": "cross_company_sample"
+    "available_primary_sources": [
+      "SRC-MSFT-FY2024-10K",
+      "SRC-MSFT-FY2024-IR"
+    ],
+    "v1_selection_status": "candidate_breadth_validation",
+    "sample_id": "FR-MSFT-001",
+    "v1_role": "candidate_breadth_validation",
+    "audit_status": "breadth_validation_partial_completed"
   },
   {
     "report_id": "finrobot_official_meta",
@@ -87,7 +96,10 @@
       "peer_or_risk_review": null
     },
     "available_primary_sources": [],
-    "v1_selection_status": "cross_company_sample"
+    "v1_selection_status": "inventory_only_candidate",
+    "sample_id": "FR-META-001",
+    "v1_role": "reserved_candidate",
+    "audit_status": "inventory_only"
   },
   {
     "report_id": "finrobot_official_tsla",
@@ -117,7 +129,10 @@
       "peer_or_risk_review": null
     },
     "available_primary_sources": [],
-    "v1_selection_status": "cross_company_sample"
+    "v1_selection_status": "inventory_only_candidate",
+    "sample_id": "FR-TSLA-001",
+    "v1_role": "reserved_reasoning_boundary_candidate",
+    "audit_status": "inventory_only"
   },
   {
     "report_id": "finrobot_official_cop",
@@ -147,6 +162,9 @@
       "peer_or_risk_review": null
     },
     "available_primary_sources": [],
-    "v1_selection_status": "cross_company_sample"
+    "v1_selection_status": "inventory_only_candidate",
+    "sample_id": "FR-COP-001",
+    "v1_role": "reserved_sector_transfer_candidate",
+    "audit_status": "inventory_only"
   }
 ]
